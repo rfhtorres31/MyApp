@@ -104,7 +104,6 @@ const registerStyle = StyleSheet.create({
      },
 
      sigInOptions: {
-        flex: 1,
         flexDirection: 'row',
         gap: 5,
      },
@@ -133,6 +132,11 @@ const registerStyle = StyleSheet.create({
         height: 25, 
         color: '#ededed'
      },
+
+     loginTxt: {
+         marginTop: -10,
+         flexDirection: 'row',
+     }
    
 });
 

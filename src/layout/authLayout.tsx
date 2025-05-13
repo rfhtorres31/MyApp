@@ -10,7 +10,9 @@ const AuthScreenLayout = ({children}: any) => {
     return (
          <SafeAreaView style={authStyles.authContainer}> 
             <KeyboardAvoidingView behavior={Platform.OS === 'ios'? 'padding': 'height'} >
-                        {children}
+                 <ScrollView>
+                       {children}
+                 </ScrollView>                      
             </KeyboardAvoidingView>
          </SafeAreaView>
     );

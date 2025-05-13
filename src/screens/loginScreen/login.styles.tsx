@@ -45,6 +45,7 @@ const loginStyle = StyleSheet.create({
      formField: {
         width: '90%',
         height: '13%',
+        backgroundColor: '#e0fafa',
         // borderWidth: 2,
         // borderColor: 'blue',
         // borderStyle: 'solid',
@@ -52,24 +53,28 @@ const loginStyle = StyleSheet.create({
 
      inputField: {
         width: '100%',
-        borderBottomWidth: 1,
+        height: '100%',
+      //   borderWidth: 1,
         paddingBottom: 4,
-        fontSize: RFPercentage(2.4),
-        fontFamily: 'Roboto-Light',
+        paddingLeft: 15,
+        fontSize: RFPercentage(2.8),
+        fontFamily: 'Poppins-Light',  
      },
 
      passwordField: {
         width: '90%',
         height: '13%',
         position: 'relative',
+        backgroundColor: '#e0fafa',
+        borderRadius: 15,
       //   borderWidth: 2,
       //   borderStyle: 'solid',
       //   borderColor: 'red',        
      },
-     
+
      eyeBtn: {
         position: 'absolute',
-        top: '42%',
+        top: '50%',
         left: '95%',
         transform: [
          {translateX: '-50%'},
@@ -80,47 +85,66 @@ const loginStyle = StyleSheet.create({
      submitBtn: {
         borderRadius: 10,
         backgroundColor: 'black',
-        width: '90%',
+        width: '75%',
         height: 50,
         alignItems: 'center',
         justifyContent: 'center',      
      },
 
      submitButtonTxt: {
-       fontSize: RFPercentage(2.7),
-       fontFamily: 'Roboto-Light',
-       color: 'white',
+       fontSize: RFPercentage(2.8),
+       fontFamily: 'Poppins-Bold',
+       color: '#ededed',
      },
-     
-     sigInGoogleBtn: {
-        position: 'relative',
-        borderRadius: 10,
+
+     signUpTxt: {
+      //   borderColor: 'red',
+      //   borderWidth: 2,
+      //   borderStyle: 'solid',
+        marginBottom: -12,
+     },
+
+     sigInOptions: {
+      //   borderColor: 'red',
+      //   borderWidth: 2,
+      //   borderStyle: 'solid',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        gap: 5,
+        marginBottom: -10,
+     },
+
+     signUpIconBtn: {
+        borderRadius: 25,
         backgroundColor: 'black',
-        width: '90%',
+        width: 50,
         height: 50,
         alignItems: 'center',
         justifyContent: 'center',  
         padding: 0,
-     }, 
-
-
-     forgotPasswordLinkTxt: {
-       fontSize: RFPercentage(2.5),
-       fontFamily: 'Roboto-Light',
-       color: '#060891',
-       textDecorationLine: 'underline',
+      //   borderColor: 'red',
+      //   borderWidth: 2,
+      //   borderStyle: 'solid',
      }, 
 
      gIcon: {
-        position: 'absolute',
-        top: '50%',
-        left: '20%',
-        transform: [
-            {translateX: '-50%'},
-            {translateY: '-50%'}
-        ],
-        width: 35,
-        height: 23, 
+        width: 40,
+        height: 25, 
+        color: '#ededed'
+     },
+
+     fbIcon: {
+        width: 40,
+        height: 25, 
+        color: '#ededed'
+     },
+
+    registerTxt: {
+      //         borderColor: 'red',
+      //   borderWidth: 2,
+      //   borderStyle: 'solid',
+         flexDirection: 'row',     
      },
    
 });

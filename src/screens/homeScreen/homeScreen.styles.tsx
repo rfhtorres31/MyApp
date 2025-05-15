@@ -6,19 +6,27 @@ import { RFPercentage } from "react-native-responsive-fontsize";
 
 
 const homeStyle = StyleSheet.create({
-    
-     homeContainer: {
-        flex: 1,   
-     },
-     
+
      logoContainer: {
-        borderColor: 'red',
-        borderWidth: 2,
-        borderStyle: 'solid',
+        justifyContent: 'center', 
+        alignItems: 'center',
+      //   borderColor: 'red',
+      //   borderWidth: 2,
+      //   borderStyle: 'solid',
+        
      }, 
 
-     image: {
+     logoTxt: {
+        marginTop: '-30%',
+        fontSize: RFPercentage(7),
+        fontFamily: 'Roboto-Thin',
+        color: 'white',
+      //   borderColor: 'blue',
+      //   borderWidth: 2,
+      //   borderStyle: 'solid',
      },
+
+
 
 });
 

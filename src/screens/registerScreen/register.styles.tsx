@@ -26,7 +26,7 @@ const registerStyle = StyleSheet.create({
      header: {
          marginTop: registerContainerHeight * 0.02,
          fontSize: RFPercentage(4), // This is based on screen height, 2 means 2% of screen height
-         fontFamily: 'Roboto-Thin',
+         fontFamily: 'Poppins-Light',
      },
 
      formContainer: {

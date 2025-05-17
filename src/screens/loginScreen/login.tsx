@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import {View, Text, TouchableOpacity, TextInput, Image } from 'react-native';
+import React, {useState} from 'react';
+import {View, Text, TouchableOpacity, TextInput } from 'react-native';
 import loginStyle from '../loginScreen/login.styles';
 import AuthScreenLayout from '../../layout/authLayout';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -8,7 +8,9 @@ import GoogleIcon from '../../../assets/icons/g-icon.svg';
 import FacebookIcon from '../../../assets/icons/fb-icon.svg';
 import { Alert } from 'react-native';
 
-const LoginScreen = ({ navigation }: any) => {
+
+
+export const LoginScreen = ({ navigation }: any) => {
      
     const [isPasswordhide, setPasswordHide] = useState(true);
     const baseURL = 'http://10.0.2.2:3304';
@@ -28,8 +30,7 @@ const LoginScreen = ({ navigation }: any) => {
     
    const handleSubmit = async () => {
 
-        try {
-             
+        try {           
             if (loginData.loginInput.trim() === '' || loginData.password.trim() === '' ){
                  Alert.alert('Missing Information', 'Please fill in all the required inputs');
                  throw new Error("Please fill in all the required input");
@@ -52,7 +53,7 @@ const LoginScreen = ({ navigation }: any) => {
             }
 
             const authToken = data.token;
-            localStorage.setItem('authToken', authToken);
+            //localStorage.setItem('authToken', authToken);
             console.log(authToken);
                    
         }
@@ -113,5 +114,3 @@ const LoginScreen = ({ navigation }: any) => {
 
 };
 
-
-export default LoginScreen;

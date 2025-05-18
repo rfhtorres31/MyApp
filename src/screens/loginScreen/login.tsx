@@ -7,7 +7,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import GoogleIcon from '../../../assets/icons/g-icon.svg';
 import FacebookIcon from '../../../assets/icons/fb-icon.svg';
 import { Alert } from 'react-native';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 export const LoginScreen = ({ navigation }: any) => {
@@ -51,9 +51,16 @@ export const LoginScreen = ({ navigation }: any) => {
                 Alert.alert('Oops!', data.details);
                 throw new Error(JSON.stringify(data)); // convert the errorResponse object to a string
             }
-
+            
+            // Token Storage
             const authToken = data.token;
-            //localStorage.setItem('authToken', authToken);
+
+            if (authToken != null) {
+              await AsyncStorage.setItem('authToken', authToken);
+              navigation.navigate('Profile');
+            }
+            
+            
             console.log(authToken);
                    
         }

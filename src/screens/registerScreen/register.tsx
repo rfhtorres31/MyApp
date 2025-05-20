@@ -7,12 +7,11 @@ import LinearGradient from 'react-native-linear-gradient';
 import GoogleIcon from '../../../assets/icons/g-icon.svg';
 import FacebookIcon from '../../../assets/icons/fb-icon.svg';
 import { Alert } from 'react-native';
-
+import { BACKEND_URL } from '@env';
 
 const RegisterScreen = ({ navigation }: any) => {
      
     const [isPasswordhide, setPasswordHide] = useState(true);
-    const baseURL = 'http://10.0.2.2:3304';
     const [formData, setFormData] = useState({
            fullname: '',
            username: '',
@@ -39,7 +38,7 @@ const RegisterScreen = ({ navigation }: any) => {
                throw new Error("One of the form input is empty");
           }
   
-          const response = await fetch(`${baseURL}/api/auth/register`, {
+          const response = await fetch(`${BACKEND_URL}/api/auth/register`, {
                 method:'POST',
                 headers: {
                   "Content-Type": "application/json",              

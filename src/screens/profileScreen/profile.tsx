@@ -8,10 +8,10 @@ import LinearGradient from 'react-native-linear-gradient';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
+
 export const ProfileScreen = ({navigation}:any) => {
     
       const dateNow = new Date();
-      const baseURL = 'http://10.0.2.2:3304';
 
 
       useEffect(()=>{
@@ -28,6 +28,8 @@ export const ProfileScreen = ({navigation}:any) => {
                 }
                 
                 const isTokenValid = await verifyToken(token);
+
+                
                 
                 // if token is invalid, redirect to home page
                 if (!isTokenValid) {

@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Text, TouchableOpacity, TextInput } from 'react-native';
+import {View, Text, TouchableOpacity, TextInput, BackHandler } from 'react-native';
 import loginStyle from '../loginScreen/login.styles';
 import AuthScreenLayout from '../../layout/authLayout';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -8,12 +8,11 @@ import GoogleIcon from '../../../assets/icons/g-icon.svg';
 import FacebookIcon from '../../../assets/icons/fb-icon.svg';
 import { Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import {BACKEND_URL} from '@env'
 
 export const LoginScreen = ({ navigation }: any) => {
      
     const [isPasswordhide, setPasswordHide] = useState(true);
-    const baseURL = 'http://10.0.2.2:3304';
     const [loginData, setLoginData] = useState({
             loginInput: '',
             password: '',
@@ -36,7 +35,7 @@ export const LoginScreen = ({ navigation }: any) => {
                  throw new Error("Please fill in all the required input");
             }
 
-            const response = await fetch(`${baseURL}/api/auth/login`, {
+            const response = await fetch(`${BACKEND_URL}/api/auth/login`, {
                  method: 'POST',
                  headers: {
                     "Content-Type": "application/json",

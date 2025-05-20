@@ -93,7 +93,7 @@ const loginStyle = StyleSheet.create({
 
      submitButtonTxt: {
        fontSize: RFPercentage(2.8),
-       fontFamily: 'Poppins-Bold',
+       fontFamily: 'Poppins-Thin',
        color: '#ededed',
      },
 

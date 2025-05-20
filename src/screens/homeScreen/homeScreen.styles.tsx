@@ -4,7 +4,6 @@ import { RFPercentage } from "react-native-responsive-fontsize";
 
 
 
-
 const homeStyle = StyleSheet.create({
   
      homeContainer: {

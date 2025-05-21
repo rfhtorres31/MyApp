@@ -8,8 +8,15 @@ import GoogleIcon from '../../../assets/icons/g-icon.svg';
 import FacebookIcon from '../../../assets/icons/fb-icon.svg';
 import { Alert } from 'react-native';
 import { BACKEND_URL } from '@env';
+import { RootStackParamList } from '../../navigation/screenNavigation';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
-const RegisterScreen = ({ navigation }: any) => {
+
+type RegisterScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Register'>; // This tells the app that hey, im in the Home route and i want to know what other routes I can go into
+type Props = {navigation:RegisterScreenNavigationProp};
+
+
+const RegisterScreen = ({ navigation }: Props) => {
      
     const [isPasswordhide, setPasswordHide] = useState(true);
     const [formData, setFormData] = useState({
@@ -52,7 +59,6 @@ const RegisterScreen = ({ navigation }: any) => {
 
              Alert.alert('Oops!', data.details);
              throw new Error(JSON.stringify(data)); // This will go to through the catch block
-
           }
 
           console.log(data);

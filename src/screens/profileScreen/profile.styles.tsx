@@ -6,16 +6,16 @@ const {width, height} = Dimensions.get('window');
 const headerContainerHeight_1 = height * 0.10; 
 const headerContainerWidth_1 = width * 1; 
 
-const headerContainerHeight_2 = height * 0.15;
+const headerContainerHeight_2 = height * 0.10;
 const headerContainerWidth_2 = width * 1; 
 
 const carouselContainerHeight = height * 0.25;
 const carouselContainerWidth = width * 1;
 
-const mainContainerHeight = height * 0.4;
+const mainContainerHeight = height * 0.47;
 const mainContainerWidth = width * 1;
 
-const menuContainerHeight = height * 0.10;
+const menuContainerHeight = height * 0.08;
 const menuContainerWidth = width * 1;
 
 export const profileStyles = StyleSheet.create ({
@@ -26,8 +26,10 @@ export const profileStyles = StyleSheet.create ({
       }, 
 
       headerContainer1: {
+          position: 'relative',
           height: headerContainerHeight_1,
           width: headerContainerWidth_1, 
+          flexDirection: 'row',
           justifyContent: 'center',
           alignItems: 'center',
         //   borderColor: 'red',
@@ -35,9 +37,22 @@ export const profileStyles = StyleSheet.create ({
         //   borderStyle: 'solid',
       }, 
 
+      notifBtn: {
+         padding: '1%',
+         position: 'absolute',
+         left: headerContainerWidth_1*0.85,
+         borderColor: 'black',
+         borderWidth: 0.5,
+         borderStyle: 'solid',
+         borderRadius: headerContainerWidth_1 * 0.5,
+      }, 
+
       dateHeaderTxt: {
         fontSize: RFPercentage(2.7),
-        fontFamily: 'Poppins-Light'
+        fontFamily: 'Poppins-Light',
+        // borderColor: 'red',
+        // borderWidth: 2,
+        // borderStyle: 'solid',
       },
 
       headerContainer2: {
@@ -45,22 +60,23 @@ export const profileStyles = StyleSheet.create ({
           width: headerContainerWidth_2,
           justifyContent: 'center',
           paddingLeft: '4%',
-        //   borderColor: 'red',
-        //   borderWidth: 2,
-        //   borderStyle: 'solid',
+          // borderWidth: 1,
+          // borderColor: 'black',
+          // borderStyle: 'solid'
       },  
 
       introHeaderTxt: {
          fontSize: RFPercentage(2.8),
-         fontFamily: 'Poppins-SemiBold'
+         fontFamily: 'Poppins-Medium'
       }, 
 
       carouselContainer: {
           height: carouselContainerHeight,
           width: carouselContainerWidth,
-        //   borderColor: 'red',
-        //   borderWidth: 2,
-        //   borderStyle: 'solid',
+          // borderColor: 'red',
+          // borderWidth: 2,
+          // borderStyle: 'solid',
+
 
       }, 
       
@@ -74,7 +90,7 @@ export const profileStyles = StyleSheet.create ({
         //  borderStyle: 'solid',
          backgroundColor: 'white',
          borderRadius: 20,
-         marginLeft: 15,
+         marginLeft: 10,
       }, 
       
 

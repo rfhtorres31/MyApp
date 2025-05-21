@@ -8,9 +8,15 @@ import GoogleIcon from '../../../assets/icons/g-icon.svg';
 import FacebookIcon from '../../../assets/icons/fb-icon.svg';
 import { Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {BACKEND_URL} from '@env'
+import {BACKEND_URL, BACKEND_URL_2} from '@env'
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../../navigation/screenNavigation';
 
-export const LoginScreen = ({ navigation }: any) => {
+
+type LoginScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Login'>; // This tells the app that hey, im in the Login route and i want to know what other routes I can go into
+type Props = {navigation: LoginScreenNavigationProp};
+
+export const LoginScreen = ({ navigation }: Props) => {
      
     const [isPasswordhide, setPasswordHide] = useState(true);
     const [loginData, setLoginData] = useState({
@@ -35,7 +41,7 @@ export const LoginScreen = ({ navigation }: any) => {
                  throw new Error("Please fill in all the required input");
             }
 
-            const response = await fetch(`${BACKEND_URL}/api/auth/login`, {
+            const response = await fetch(`${BACKEND_URL_2}/api/auth/login`, {
                  method: 'POST',
                  headers: {
                     "Content-Type": "application/json",
@@ -53,14 +59,14 @@ export const LoginScreen = ({ navigation }: any) => {
             
             // Token Storage
             const authToken = data.token;
+            console.log(data);
 
             if (authToken != null) {
-              await AsyncStorage.setItem('authToken', authToken);
-              navigation.navigate('Profile');
+                await AsyncStorage.setItem('authToken', authToken);
+                console.log('Navigating with username:', data.details);
+                navigation.navigate('Profile', {username:data.details.username});
             }
-            
-            
-            console.log(authToken);
+                     
                    
         }
         catch (error) {
@@ -69,7 +75,6 @@ export const LoginScreen = ({ navigation }: any) => {
 
    };
 
-    console.log(loginData);
 
     return (
        <AuthScreenLayout>

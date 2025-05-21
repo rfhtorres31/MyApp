@@ -15,16 +15,13 @@ const App = () => {
      
     const restoreState = async () => {
          
-      try {
-           
+      try {          
         const currentState = await AsyncStorage.getItem(PERSISTENCE_KEY);
-
         const state  = currentState ? JSON.parse(currentState) : undefined;
          
         if (state !== undefined) {
             setInitialState(state);
         }
-
       }
       catch (e){
       }

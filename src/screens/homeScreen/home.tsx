@@ -16,6 +16,8 @@ const logoHeight = height * 0.55;
 type HomeScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Home'>; // This tells the app that hey, im in the Home route and i want to know what other routes I can go into
 type Props = {navigation:HomeScreenNavigationProp};
 
+
+
 const HomeScreen = ({navigation}:Props) => {
       
      const opacAnim = useRef(new Animated.Value(0)).current; // Starting value is 0

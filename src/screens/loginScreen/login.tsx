@@ -41,7 +41,7 @@ export const LoginScreen = ({ navigation }: Props) => {
                  throw new Error("Please fill in all the required input");
             }
 
-            const response = await fetch(`${BACKEND_URL_2}/api/auth/login`, {
+            const response = await fetch(`${BACKEND_URL}/api/auth/login`, {
                  method: 'POST',
                  headers: {
                     "Content-Type": "application/json",
@@ -65,9 +65,7 @@ export const LoginScreen = ({ navigation }: Props) => {
                 await AsyncStorage.setItem('authToken', authToken);
                 console.log('Navigating with username:', data.details);
                 navigation.navigate('Profile', {username:data.details.username});
-            }
-                     
-                   
+            }                 
         }
         catch (error) {
               console.error(error);

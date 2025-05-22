@@ -3,7 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import RegisterScreen from '../screens/registerScreen/register';
 import {LoginScreen} from '../screens/loginScreen/login';
 import HomeScreen from '../screens/homeScreen/home';
-import { ProfileScreen } from '../screens/profileScreen/profile';
+import  ProfileScreen  from '../screens/profileScreen/profile';
 
 // Define the param list for navigation
 export type RootStackParamList = {

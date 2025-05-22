@@ -6,7 +6,7 @@ const {width, height} = Dimensions.get('window');
 const headerContainerHeight_1 = height * 0.10; 
 const headerContainerWidth_1 = width * 1; 
 
-const headerContainerHeight_2 = height * 0.10;
+const headerContainerHeight_2 = height * 0.08;
 const headerContainerWidth_2 = width * 1; 
 
 const carouselContainerHeight = height * 0.25;
@@ -37,38 +37,41 @@ export const profileStyles = StyleSheet.create ({
         //   borderStyle: 'solid',
       }, 
 
-      notifBtn: {
+      userSettingsBtn: {
          padding: '1%',
          position: 'absolute',
          left: headerContainerWidth_1*0.85,
          borderColor: 'black',
-         borderWidth: 0.5,
+         borderWidth: 0.2,
          borderStyle: 'solid',
          borderRadius: headerContainerWidth_1 * 0.5,
       }, 
 
-      dateHeaderTxt: {
-        fontSize: RFPercentage(2.7),
-        fontFamily: 'Poppins-Light',
-        // borderColor: 'red',
-        // borderWidth: 2,
-        // borderStyle: 'solid',
-      },
 
       headerContainer2: {
           height: headerContainerHeight_2,
           width: headerContainerWidth_2,
           justifyContent: 'center',
           paddingLeft: '4%',
-          // borderWidth: 1,
-          // borderColor: 'black',
-          // borderStyle: 'solid'
+          borderWidth: 1,
+          borderColor: 'black',
+          borderStyle: 'solid'
       },  
 
-      introHeaderTxt: {
+      dateHeaderTxt: {
+        marginTop: '-1.5%',
+        fontSize: RFPercentage(2),
+        fontFamily: 'Poppins-Light',
+        // borderColor: 'red',
+        // borderWidth: 2,
+        // borderStyle: 'solid',
+      },
+
+      introHeaderTxt1: {
          fontSize: RFPercentage(2.8),
          fontFamily: 'Poppins-Medium'
       }, 
+
 
       carouselContainer: {
           height: carouselContainerHeight,
@@ -82,37 +85,82 @@ export const profileStyles = StyleSheet.create ({
       
       featureContainer: {
          width: carouselContainerWidth * 0.5,
-         height: carouselContainerHeight*0.7,
+         height: carouselContainerHeight * 0.7,
          justifyContent: 'center',
          alignItems: 'center',
         //  borderColor: 'red',
         //  borderWidth: 2,
         //  borderStyle: 'solid',
-         backgroundColor: 'white',
+         backgroundColor: '#b3eaff',
          borderRadius: 20,
-         marginLeft: 10,
+         marginLeft: 18,
+         
       }, 
-      
+
+      featureBtn: {
+         justifyContent: 'center',
+         alignItems: 'center',
+        //  borderColor: 'red',
+        //  borderWidth: 2,
+        //  borderStyle: 'solid',     
+      },
+
+      featureTitle:{
+        fontSize: RFPercentage(2.8),
+        fontFamily: 'Poppins-Medium',
+        textAlign: 'center',
+        marginLeft: '4%',
+      },
+
+      featureHeader: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center'
+      },
+
+      featureDesc: {
+         marginTop: '3%',
+         fontSize: RFPercentage(2),
+         fontFamily: 'Poppins-Regular',
+         color: '#4a4a4a',
+         textAlign: 'center',
+      },
 
       mainContainer: {
           height: mainContainerHeight,
           width: mainContainerWidth,
-        //   borderColor: 'red',
-        //   borderWidth: 2,
-        //   borderStyle: 'solid',
+          borderColor: 'red',
+          borderWidth: 2,
+          borderStyle: 'solid',
       }, 
        
       menuContainer: {
           height: menuContainerHeight,
           width: menuContainerWidth,
-          borderColor: 'red',
-          borderWidth: 2,
-          borderStyle: 'solid',
+          flexDirection: 'row',
+          justifyContent: 'center',
+          alignItems: 'center',
+          // borderColor: 'red',
+          // borderWidth: 2,
+          // borderStyle: 'solid',
+      }, 
+
+      addIconBtn: {
+         padding: '2.3%',
+         backgroundColor: '#b3eaff',
+         borderRadius: headerContainerWidth_1 * 0.5,
       }, 
       
 
-
-
-
 });
 
+export const shadowSettings = {
+  distance: 7,
+  offset: [19, 7] as [number, number],
+  startColor: '#00000020',
+  radius: 15,
+  containerViewStyle: {
+    width: carouselContainerWidth * 0.5,
+    height: carouselContainerHeight * 0.7, 
+  },
+};

@@ -3,20 +3,21 @@ import { RFPercentage } from "react-native-responsive-fontsize";
 
 const {width, height} = Dimensions.get('window'); 
 
-const headerContainerHeight_1 = height * 0.10; 
+const headerContainerHeight_1 = height * 0.08; 
 const headerContainerWidth_1 = width * 1; 
 
 const headerContainerHeight_2 = height * 0.08;
 const headerContainerWidth_2 = width * 1; 
 
-const carouselContainerHeight = height * 0.25;
+const searchBarContainerHeight = height * 0.10;
+const searchBarContainerWidth = width * 1;
+
+const carouselContainerHeight = height * 0.23;
 const carouselContainerWidth = width * 1;
 
-const mainContainerHeight = height * 0.47;
+const mainContainerHeight = height * 0.49;
 const mainContainerWidth = width * 1;
 
-const menuContainerHeight = height * 0.08;
-const menuContainerWidth = width * 1;
 
 export const profileStyles = StyleSheet.create ({
 
@@ -32,18 +33,18 @@ export const profileStyles = StyleSheet.create ({
           flexDirection: 'row',
           justifyContent: 'center',
           alignItems: 'center',
-        //   borderColor: 'red',
-        //   borderWidth: 2,
-        //   borderStyle: 'solid',
+          // borderColor: 'red',
+          // borderWidth: 2,
+          // borderStyle: 'solid',
       }, 
 
       userSettingsBtn: {
          padding: '1%',
          position: 'absolute',
          left: headerContainerWidth_1*0.85,
-         borderColor: 'black',
-         borderWidth: 0.2,
-         borderStyle: 'solid',
+        //  borderColor: 'black',
+        //  borderWidth: 0.2,
+        //  borderStyle: 'solid',
          borderRadius: headerContainerWidth_1 * 0.5,
       }, 
 
@@ -52,11 +53,48 @@ export const profileStyles = StyleSheet.create ({
           height: headerContainerHeight_2,
           width: headerContainerWidth_2,
           justifyContent: 'center',
-          paddingLeft: '4%',
-          borderWidth: 1,
-          borderColor: 'black',
-          borderStyle: 'solid'
-      },  
+          paddingLeft: '6%',
+          // borderWidth: 1,
+          // borderColor: 'black',
+          // borderStyle: 'solid'
+      },
+
+      searchBarContainer: {
+        height: searchBarContainerHeight,
+        width: searchBarContainerWidth,
+        justifyContent: 'center',
+        alignItems: 'center',
+        // borderColor: 'red',
+        // borderWidth: 2,
+        // borderStyle: 'solid',  
+          
+      },
+
+      searchBar: {
+        position: 'relative',  
+        height: searchBarContainerHeight * 0.8,
+        width: searchBarContainerWidth * 0.9,  
+        justifyContent: 'center', 
+        // borderColor: 'blue',
+        // borderWidth: 2,
+        // borderStyle: 'solid',
+        borderRadius: 16,
+        backgroundColor: 'rgba(0,0,0,0.1)'   
+      },
+
+      searchBarTxt: {
+        fontSize: RFPercentage(2.4),
+        paddingLeft: '15%',
+      },
+
+      searchBtn: {
+        position: 'absolute',
+        // borderColor: 'blue',
+        // borderWidth: 2,
+        // borderStyle: 'solid',
+        top: '33%',
+        left: '5%',   
+      },
 
       dateHeaderTxt: {
         marginTop: '-1.5%',
@@ -68,8 +106,8 @@ export const profileStyles = StyleSheet.create ({
       },
 
       introHeaderTxt1: {
-         fontSize: RFPercentage(2.8),
-         fontFamily: 'Poppins-Medium'
+         fontSize: RFPercentage(3),
+         fontFamily: 'Poppins-Bold'
       }, 
 
 
@@ -79,8 +117,6 @@ export const profileStyles = StyleSheet.create ({
           // borderColor: 'red',
           // borderWidth: 2,
           // borderStyle: 'solid',
-
-
       }, 
       
       featureContainer: {
@@ -127,28 +163,37 @@ export const profileStyles = StyleSheet.create ({
       },
 
       mainContainer: {
+          
           height: mainContainerHeight,
           width: mainContainerWidth,
-          borderColor: 'red',
-          borderWidth: 2,
-          borderStyle: 'solid',
-      }, 
-       
-      menuContainer: {
-          height: menuContainerHeight,
-          width: menuContainerWidth,
-          flexDirection: 'row',
-          justifyContent: 'center',
-          alignItems: 'center',
           // borderColor: 'red',
           // borderWidth: 2,
           // borderStyle: 'solid',
       }, 
 
-      addIconBtn: {
+      mainHeaderContainer: {
+          position: 'relative',
+          height: mainContainerHeight * 0.2,
+          width: mainContainerWidth,
+          // borderColor: 'red',
+          // borderWidth: 2,
+          // borderStyle: 'solid',
+          justifyContent: 'center',
+      },
+
+      mainHeaderTxt: {
+        marginLeft: '5%',
+        fontSize: RFPercentage(3.2),
+        fontFamily: 'Poppins-Regular',
+      },
+       
+      addIconBtn2: {
+         position: 'absolute',
+         left: '85%',
+         top: '10%',
          padding: '2.3%',
          backgroundColor: '#b3eaff',
-         borderRadius: headerContainerWidth_1 * 0.5,
+         borderRadius: mainContainerWidth * 0.5,
       }, 
       
 

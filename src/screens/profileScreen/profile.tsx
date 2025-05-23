@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import { ScrollView, View, Text, TouchableOpacity} from 'react-native';
+import { ScrollView, View, Text, TouchableOpacity, TextInput, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {profileStyles, shadowSettings} from './profile.styles';
 import { getDayName, getMonthName } from '../../utils/dateUtils';
@@ -12,6 +12,7 @@ import { RouteProp } from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AddTaskTypeModal from '../../modals/addtaskmodal';
 import { Shadow } from 'react-native-shadow-2';
+import { RFPercentage } from 'react-native-responsive-fontsize';
 
 type ProfilScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Profile'>; // This tells the app that hey, im in the Home route and i want to know what other routes I can go into
 type ProfileScreenRouteProp = RouteProp<RootStackParamList, 'Profile'>;
@@ -60,6 +61,9 @@ const ProfileScreen = ({navigation, route}:Props) => {
     
       return (
          <SafeAreaView style={profileStyles.profileContainer}>
+            <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios'? 'padding': 'height'} >
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+            <View style={{ flex: 1 }}>           
             <View style={profileStyles.headerContainer1}>
                <TouchableOpacity style={profileStyles.userSettingsBtn}>
                   <Ionicons name="person-outline" size={23} color="#000" />
@@ -69,7 +73,7 @@ const ProfileScreen = ({navigation, route}:Props) => {
                <Text style={profileStyles.introHeaderTxt1}>Hello {username}</Text>
                <Text style={profileStyles.dateHeaderTxt}>{dateHeader}</Text>
             </View>
-            <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={profileStyles.carouselContainer} contentContainerStyle={{flexDirection:'row', paddingRight: '3%', alignItems: 'center',}}>               
+           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={profileStyles.carouselContainer} contentContainerStyle={{flexDirection:'row', paddingRight: '3%', alignItems: 'center',}}>               
               <Shadow {...shadowSettings}>
                 <LinearGradient colors={['#eafcff', '#b3eaff']} style={profileStyles.featureContainer}>
                   <TouchableOpacity style={profileStyles.featureBtn}>
@@ -138,18 +142,32 @@ const ProfileScreen = ({navigation, route}:Props) => {
               </Shadow>
            </ScrollView>
            <View style={profileStyles.mainContainer}>
+             <View style={profileStyles.mainHeaderContainer}>
+                <Text style={profileStyles.mainHeaderTxt}>My Tasks</Text>
+                <TouchableOpacity style={profileStyles.addIconBtn2} onPress={()=>setModalVisible(true)}>
+                   <Ionicons name="add" size={28} color="#000" />
+                </TouchableOpacity>
+             </View>
 
-              <AddTaskTypeModal visible={modalVisible} onClose={()=>setModalVisible(false)}/>
+              
+              
 
 
 
-              <Text>Test4</Text>
+              
            </View>
-           <View style={profileStyles.menuContainer}>
-              <TouchableOpacity style={profileStyles.addIconBtn} onPress={()=>setModalVisible(true)}>
-                  <Ionicons name="add" size={28} color="#000" />
-              </TouchableOpacity>
+           <View style={profileStyles.searchBarContainer}>
+            <TouchableOpacity style={profileStyles.searchBar}>
+               <TextInput style={profileStyles.searchBarTxt} editable={false} placeholder="Find your task"/>
+               <Ionicons name="search" size={23} color="#4a4a4a" style={profileStyles.searchBtn}/>
+            </TouchableOpacity>
            </View>
+
+           <AddTaskTypeModal visible={modalVisible} onClose={()=>setModalVisible(false)}/>
+
+           </View>
+           </TouchableWithoutFeedback>
+           </KeyboardAvoidingView>
         </SafeAreaView>
     );
 };

@@ -1,6 +1,6 @@
 import React from 'react';
 import {Modal, View, Text, TouchableOpacity} from 'react-native';
-import {taskModalStyle, shadowSettings} from './addtaskmodalstyles';
+import {taskModalStyle, shadowSettings} from './addTaskStyles';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import LinearGradient from 'react-native-linear-gradient';
 import { Shadow } from 'react-native-shadow-2';
@@ -16,7 +16,7 @@ const AddTaskTypeModal = ({visible, onClose}: AddTaskTypeModalProps) => {
    
 
   return (
-     <Modal transparent visible={visible} animationType="fade">
+     <Modal transparent={true} visible={visible} animationType="fade">
          <View style={taskModalStyle.overlay}>
             <View style={taskModalStyle.main}>
                 <View style={taskModalStyle.headerContainer}>

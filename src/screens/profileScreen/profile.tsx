@@ -10,9 +10,11 @@ import { RootStackParamList } from '../../navigation/screenNavigation';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RouteProp } from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import AddTaskTypeModal from '../../modals/addtaskmodal';
 import { Shadow } from 'react-native-shadow-2';
-import { RFPercentage } from 'react-native-responsive-fontsize';
+import AddTaskTypeModal from '../../modals/addTask';
+import SearchTaskModal from '../../modals/searchTask';
+
+
 
 type ProfilScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Profile'>; // This tells the app that hey, im in the Home route and i want to know what other routes I can go into
 type ProfileScreenRouteProp = RouteProp<RootStackParamList, 'Profile'>;
@@ -25,7 +27,8 @@ type Props = {
 
 const ProfileScreen = ({navigation, route}:Props) => {
        
-      const [modalVisible, setModalVisible] = useState(false);
+      const [createTaskModalVisible, setCreateTaskModalVisible] = useState(false);
+      const [searchTaskModalVisible, setSearchTaskModalVisible] = useState(false);
       const username = route?.params?.username ?? "test";
       const dateNow = new Date();
 
@@ -144,11 +147,11 @@ const ProfileScreen = ({navigation, route}:Props) => {
            <View style={profileStyles.mainContainer}>
              <View style={profileStyles.mainHeaderContainer}>
                 <Text style={profileStyles.mainHeaderTxt}>My Tasks</Text>
-                <TouchableOpacity style={profileStyles.addIconBtn2} onPress={()=>setModalVisible(true)}>
+                <TouchableOpacity style={profileStyles.addIconBtn2} onPress={()=>setCreateTaskModalVisible(true)}>
                    <Ionicons name="add" size={28} color="#000" />
                 </TouchableOpacity>
              </View>
-
+           
               
               
 
@@ -157,13 +160,14 @@ const ProfileScreen = ({navigation, route}:Props) => {
               
            </View>
            <View style={profileStyles.searchBarContainer}>
-            <TouchableOpacity style={profileStyles.searchBar}>
-               <TextInput style={profileStyles.searchBarTxt} editable={false} placeholder="Find your task"/>
-               <Ionicons name="search" size={23} color="#4a4a4a" style={profileStyles.searchBtn}/>
-            </TouchableOpacity>
+               <TouchableOpacity style={profileStyles.searchBar} onPress={()=>setSearchTaskModalVisible(true)}>
+                  <TextInput style={profileStyles.searchBarTxt} editable={false} placeholder="Find your task"/>
+                  <Ionicons name="search" size={23} color="#4a4a4a" style={profileStyles.searchBtn}/>
+               </TouchableOpacity>
            </View>
 
-           <AddTaskTypeModal visible={modalVisible} onClose={()=>setModalVisible(false)}/>
+           <SearchTaskModal  visible={searchTaskModalVisible} onClose={()=>setSearchTaskModalVisible(false)} />
+           <AddTaskTypeModal visible={createTaskModalVisible} onClose={()=>setCreateTaskModalVisible(false)}/>
 
            </View>
            </TouchableWithoutFeedback>

@@ -59,31 +59,23 @@ export const profileStyles = StyleSheet.create ({
           // borderStyle: 'solid'
       },
 
-      searchBarContainer: {
-        height: searchBarContainerHeight,
-        width: searchBarContainerWidth,
-        justifyContent: 'center',
-        alignItems: 'center',
-        // borderColor: 'red',
-        // borderWidth: 2,
-        // borderStyle: 'solid',         
-      },
 
       searchBar: {
-        position: 'relative',  
-        height: searchBarContainerHeight * 0.8,
-        width: searchBarContainerWidth * 0.9,  
+        position: 'absolute', 
+        height: searchBarContainerHeight * 0.6,
+        width: searchBarContainerWidth * 0.5,  
+        left: '45%',
         justifyContent: 'center', 
         // borderColor: 'blue',
         // borderWidth: 2,
         // borderStyle: 'solid',
-        borderRadius: 16,
-        backgroundColor: 'rgba(0,0,0,0.1)'   
+        // borderRadius: 16,
+        // backgroundColor: 'rgba(0,0,0,0.1)'   
       },
 
       searchBarTxt: {
-        fontSize: RFPercentage(2.4),
-        paddingLeft: '15%',
+        fontSize: RFPercentage(2.5),
+        paddingLeft: '52%',
       },
 
       searchBtn: {
@@ -91,8 +83,8 @@ export const profileStyles = StyleSheet.create ({
         // borderColor: 'blue',
         // borderWidth: 2,
         // borderStyle: 'solid',
-        top: '33%',
-        left: '5%',   
+        top: '25%',
+        left: '85%',   
       },
 
       dateHeaderTxt: {
@@ -185,8 +177,7 @@ export const profileStyles = StyleSheet.create ({
          textAlign: 'center',
       },
 
-      mainContainer: {
-          
+      mainContainer: {        
           height: mainContainerHeight,
           width: mainContainerWidth,
           // borderColor: 'red',
@@ -198,16 +189,28 @@ export const profileStyles = StyleSheet.create ({
           position: 'relative',
           height: mainContainerHeight * 0.2,
           width: mainContainerWidth,
+          flexDirection: 'row',
           // borderColor: 'red',
           // borderWidth: 2,
           // borderStyle: 'solid',
-          justifyContent: 'center',
+          alignItems: 'center',      
       },
 
       mainHeaderTxt: {
+        position: 'absolute',
         marginLeft: '5%',
         fontSize: RFPercentage(3.2),
         fontFamily: 'Poppins-Regular',
+      },
+
+      TestContainer: {
+        height: searchBarContainerHeight,
+        width: searchBarContainerWidth,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderColor: 'red',
+        borderWidth: 2,
+        borderStyle: 'solid',         
       },
        
       

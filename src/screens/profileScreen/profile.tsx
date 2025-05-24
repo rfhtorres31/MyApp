@@ -5,7 +5,6 @@ import {profileStyles, shadowSettings} from './profile.styles';
 import { getDayName, getMonthName } from '../../utils/dateUtils';
 import { verifyToken } from '../../utils/authUtils';
 import LinearGradient from 'react-native-linear-gradient';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { RootStackParamList } from '../../navigation/screenNavigation';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RouteProp } from '@react-navigation/native';
@@ -13,7 +12,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Shadow } from 'react-native-shadow-2';
 import AddTaskTypeModal from '../../modals/addTask';
 import SearchTaskModal from '../../modals/searchTask';
-
+import * as Keychain from 'react-native-keychain';
 
 
 type ProfilScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Profile'>; // This tells the app that hey, im in the Home route and i want to know what other routes I can go into
@@ -36,8 +35,13 @@ const ProfileScreen = ({navigation, route}:Props) => {
        
            const tokenVerification = async () => {
 
-                const token =  await AsyncStorage.getItem('authToken'); //Always put inside an asynchronous function the AsynStorage Class
-                
+                let token = "";
+                const credentials = await Keychain.getGenericPassword();
+               
+                if (credentials){
+                    token = credentials.password;
+                }
+
                 // if token is not found, redirect to home page
                 if (!token) {
                     console.log("Executed");
@@ -150,6 +154,10 @@ const ProfileScreen = ({navigation, route}:Props) => {
            <View style={profileStyles.mainContainer}>
              <View style={profileStyles.mainHeaderContainer}>
                 <Text style={profileStyles.mainHeaderTxt}>My Tasks</Text>
+                <TouchableOpacity style={profileStyles.searchBar} onPress={()=>setSearchTaskModalVisible(true)}>
+                  <TextInput style={profileStyles.searchBarTxt} editable={false} placeholder="Search"/>
+                  <Ionicons name="search" size={23} color="#4a4a4a" style={profileStyles.searchBtn}/>
+                </TouchableOpacity>
              </View>
            
               
@@ -159,11 +167,8 @@ const ProfileScreen = ({navigation, route}:Props) => {
 
               
            </View>
-           <View style={profileStyles.searchBarContainer}>
-               <TouchableOpacity style={profileStyles.searchBar} onPress={()=>setSearchTaskModalVisible(true)}>
-                  <TextInput style={profileStyles.searchBarTxt} editable={false} placeholder="Find your task"/>
-                  <Ionicons name="search" size={23} color="#4a4a4a" style={profileStyles.searchBtn}/>
-               </TouchableOpacity>
+           <View style={profileStyles.TestContainer}>
+              
            </View>
 
            <SearchTaskModal  visible={searchTaskModalVisible} onClose={()=>setSearchTaskModalVisible(false)} />

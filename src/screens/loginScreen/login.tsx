@@ -7,11 +7,10 @@ import LinearGradient from 'react-native-linear-gradient';
 import GoogleIcon from '../../../assets/icons/g-icon.svg';
 import FacebookIcon from '../../../assets/icons/fb-icon.svg';
 import { Alert } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {BACKEND_URL, BACKEND_URL_2} from '@env'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../navigation/screenNavigation';
-
+import * as Keychain from 'react-native-keychain';
 
 type LoginScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Login'>; // This tells the app that hey, im in the Login route and i want to know what other routes I can go into
 type Props = {navigation: LoginScreenNavigationProp};
@@ -62,7 +61,7 @@ export const LoginScreen = ({ navigation }: Props) => {
             console.log(data);
 
             if (authToken != null) {
-                await AsyncStorage.setItem('authToken', authToken);
+                await Keychain.setGenericPassword('authToken', authToken);
                 console.log('Navigating with username:', data.details);
                 navigation.navigate('Profile', {username:data.details.username});
             }                 

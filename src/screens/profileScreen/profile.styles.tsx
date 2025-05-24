@@ -9,14 +9,14 @@ const headerContainerWidth_1 = width * 1;
 const headerContainerHeight_2 = height * 0.08;
 const headerContainerWidth_2 = width * 1; 
 
-const searchBarContainerHeight = height * 0.10;
-const searchBarContainerWidth = width * 1;
-
-const carouselContainerHeight = height * 0.23;
+const carouselContainerHeight = height * 0.25;
 const carouselContainerWidth = width * 1;
 
-const mainContainerHeight = height * 0.49;
+const mainContainerHeight = height * 0.45;
 const mainContainerWidth = width * 1;
+
+const searchBarContainerHeight = height * 0.11;
+const searchBarContainerWidth = width * 1;
 
 
 export const profileStyles = StyleSheet.create ({
@@ -66,8 +66,7 @@ export const profileStyles = StyleSheet.create ({
         alignItems: 'center',
         // borderColor: 'red',
         // borderWidth: 2,
-        // borderStyle: 'solid',  
-          
+        // borderStyle: 'solid',         
       },
 
       searchBar: {
@@ -110,18 +109,42 @@ export const profileStyles = StyleSheet.create ({
          fontFamily: 'Poppins-Bold'
       }, 
 
-
       carouselContainer: {
           height: carouselContainerHeight,
           width: carouselContainerWidth,
-          // borderColor: 'red',
+          // borderColor: 'blue',
           // borderWidth: 2,
           // borderStyle: 'solid',
+          position: 'relative',
+      },
+
+      carouseHeader: {
+         position: 'absolute',
+         fontSize: RFPercentage(3),
+         fontFamily: 'Poppins-Medium',
+         marginLeft: 18,
+        //  borderColor: 'blue',
+        //  borderWidth: 2,
+        //  borderStyle: 'solid',
+         top: '11%',
+      },
+
+      carouselBody: {
+          position: 'absolute',
+          // borderColor: 'red',
+          // borderWidth: 2,
+          // borderStyle: 'solid',   
+          top: '30%',
+          
       }, 
       
+
+
+
+
       featureContainer: {
          width: carouselContainerWidth * 0.5,
-         height: carouselContainerHeight * 0.7,
+         height: carouselContainerHeight * 0.56,
          justifyContent: 'center',
          alignItems: 'center',
         //  borderColor: 'red',
@@ -187,14 +210,6 @@ export const profileStyles = StyleSheet.create ({
         fontFamily: 'Poppins-Regular',
       },
        
-      addIconBtn2: {
-         position: 'absolute',
-         left: '85%',
-         top: '10%',
-         padding: '2.3%',
-         backgroundColor: '#b3eaff',
-         borderRadius: mainContainerWidth * 0.5,
-      }, 
       
 
 });

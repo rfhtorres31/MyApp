@@ -75,11 +75,13 @@ const ProfileScreen = ({navigation, route}:Props) => {
             <View style={profileStyles.headerContainer2}>
                <Text style={profileStyles.introHeaderTxt1}>Hello {username}</Text>
                <Text style={profileStyles.dateHeaderTxt}>{dateHeader}</Text>
-            </View>
-           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={profileStyles.carouselContainer} contentContainerStyle={{flexDirection:'row', paddingRight: '3%', alignItems: 'center',}}>               
+            </View>  
+           <View style={profileStyles.carouselContainer}>
+           <Text style={profileStyles.carouseHeader}>Categories</Text>
+           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={profileStyles.carouselBody} contentContainerStyle={{flexDirection:'row', paddingRight: '3%', paddingTop: '3%', paddingBottom: '3%'}}>               
               <Shadow {...shadowSettings}>
                 <LinearGradient colors={['#eafcff', '#b3eaff']} style={profileStyles.featureContainer}>
-                  <TouchableOpacity style={profileStyles.featureBtn}>
+                  <TouchableOpacity style={profileStyles.featureBtn} onPress={()=>setCreateTaskModalVisible(true)}>
                      <View style={profileStyles.featureHeader}>
                         <Ionicons name="person-circle-outline" size={24} color="#000"/>
                         <Text style={profileStyles.featureTitle}>Personal</Text>
@@ -90,7 +92,7 @@ const ProfileScreen = ({navigation, route}:Props) => {
               </Shadow>
               <Shadow {...shadowSettings}>
                 <LinearGradient colors={['#eafcff', '#b3eaff']} style={profileStyles.featureContainer}>
-                  <TouchableOpacity style={profileStyles.featureBtn}>
+                  <TouchableOpacity style={profileStyles.featureBtn} onPress={()=>setCreateTaskModalVisible(true)}>
                      <View style={profileStyles.featureHeader}>
                         <Ionicons name="briefcase-outline" size={24} color="#000"/>
                         <Text style={profileStyles.featureTitle}>Work</Text>
@@ -101,7 +103,7 @@ const ProfileScreen = ({navigation, route}:Props) => {
               </Shadow>
               <Shadow {...shadowSettings}>
                 <LinearGradient colors={['#eafcff', '#b3eaff']} style={profileStyles.featureContainer}>
-                  <TouchableOpacity style={profileStyles.featureBtn}>
+                  <TouchableOpacity style={profileStyles.featureBtn} onPress={()=>setCreateTaskModalVisible(true)}>
                      <View style={profileStyles.featureHeader}>
                         <Ionicons name="home-outline" size={24} color="#000"/>
                         <Text style={profileStyles.featureTitle}>Home</Text>
@@ -112,7 +114,7 @@ const ProfileScreen = ({navigation, route}:Props) => {
               </Shadow>
               <Shadow {...shadowSettings}>
                 <LinearGradient colors={['#eafcff', '#b3eaff']} style={profileStyles.featureContainer}>
-                  <TouchableOpacity style={profileStyles.featureBtn}>
+                  <TouchableOpacity style={profileStyles.featureBtn} onPress={()=>setCreateTaskModalVisible(true)}>
                      <View style={profileStyles.featureHeader}>
                         <Ionicons name="medkit-outline" size={24} color="#000"/>
                         <Text style={profileStyles.featureTitle}>Health</Text>
@@ -123,7 +125,7 @@ const ProfileScreen = ({navigation, route}:Props) => {
               </Shadow>
               <Shadow {...shadowSettings}>
                 <LinearGradient colors={['#eafcff', '#b3eaff']} style={profileStyles.featureContainer}>
-                  <TouchableOpacity style={profileStyles.featureBtn}>
+                  <TouchableOpacity style={profileStyles.featureBtn} onPress={()=>setCreateTaskModalVisible(true)}>
                      <View style={profileStyles.featureHeader}>
                         <Ionicons name="card-outline" size={24} color="#000"/>
                         <Text style={profileStyles.featureTitle}>Bills</Text>
@@ -134,7 +136,7 @@ const ProfileScreen = ({navigation, route}:Props) => {
               </Shadow>
               <Shadow {...shadowSettings}>
                 <LinearGradient colors={['#eafcff', '#b3eaff']} style={profileStyles.featureContainer}>
-                  <TouchableOpacity style={profileStyles.featureBtn}>
+                  <TouchableOpacity style={profileStyles.featureBtn} onPress={()=>setCreateTaskModalVisible(true)}>
                      <View style={profileStyles.featureHeader}>
                         <Ionicons name="cart-outline" size={24} color="#000"/>
                         <Text style={profileStyles.featureTitle}>Shopping</Text>
@@ -144,12 +146,10 @@ const ProfileScreen = ({navigation, route}:Props) => {
                 </LinearGradient>
               </Shadow>
            </ScrollView>
+           </View>
            <View style={profileStyles.mainContainer}>
              <View style={profileStyles.mainHeaderContainer}>
                 <Text style={profileStyles.mainHeaderTxt}>My Tasks</Text>
-                <TouchableOpacity style={profileStyles.addIconBtn2} onPress={()=>setCreateTaskModalVisible(true)}>
-                   <Ionicons name="add" size={28} color="#000" />
-                </TouchableOpacity>
              </View>
            
               

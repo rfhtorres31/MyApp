@@ -14,40 +14,37 @@ export const verifyToken = async (authToken :any): Promise<boolean> => {
                     "Content-Type": "application/json",
                  },
           });
-          
-          const data = await responseObj.json();
-          console.log(data);
 
           if (!responseObj.ok) {
-             console.log(data);
-             throw new Error (JSON.stringify(data));           
+            return false; 
           }
-          return true;
+
+          return true;    
         }
 
-        // If token is invalid, redirect to Home (Auto Logout)
-        catch (e) {      
+        catch (err) {   
+           console.log(err);  
            return false;
         }
 };
 
 
 
-export const logoutUser = async (): Promise<boolean> => {
+export const logoutUser = async (): Promise<any> => {
   
       try {
 
             const credentials = await getGenericPassword();
 
             if (!credentials) {
-                return false;
+                throw new Error("No token stored");
             } 
             
             const authToken = credentials.password;
             const isTokenValid = await verifyToken(authToken);
 
             if (!isTokenValid){
-               return false;
+               return {success:false, error: "Token is invalid"};
             }
 
             // This returns a Response Object, use .json() method to parse the content of it
@@ -62,14 +59,18 @@ export const logoutUser = async (): Promise<boolean> => {
             if (!responseObj.ok) {
                   throw new Error("Error encounter on Logout");
             }
-               
-            // Deletes user token from keychain storage
+            
+
+            // If responseObj.ok is true, (200 response from backend meaning token deletion from redis is successful
+            // Deletes token from keychain storage
+            const data = await responseObj.json();
+            console.log(data);
             await resetGenericPassword(); // returns true if deleted and false if not
-            return true;
+            return {success:true};
          
        } catch (err) {
              console.error(err);
-             return false;
+             return {success:false, error: err};
        }
 
 };

@@ -67,13 +67,15 @@ const ProfileScreen = ({navigation, route}:Props) => {
 
       const handleLogout = async () => {
            
-           const success: boolean = await logoutUser();
-
-           if (success) {
-              navigation.reset({
-                index: 0,
-                routes: [{name: 'Login'}], 
-              });
+           const responseObj = await logoutUser();
+           const success = responseObj?.success;
+           
+           // Either token is invalid (false) or token deletion is success (true), redirect to login screen.
+           if (success == false || success == true) {
+               navigation.reset({
+                     index: 0,
+                     routes: [{name: 'Login'}], 
+               });
            }
       }; 
 

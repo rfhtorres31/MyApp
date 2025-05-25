@@ -10,7 +10,7 @@ import { Alert } from 'react-native';
 import {BACKEND_URL, BACKEND_URL_2} from '@env'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../navigation/screenNavigation';
-import * as Keychain from 'react-native-keychain';
+import {setGenericPassword} from 'react-native-keychain';
 
 type LoginScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Login'>; // This tells the app that hey, im in the Login route and i want to know what other routes I can go into
 type Props = {navigation: LoginScreenNavigationProp};
@@ -61,9 +61,18 @@ export const LoginScreen = ({ navigation }: Props) => {
             console.log(data);
 
             if (authToken != null) {
-                await Keychain.setGenericPassword('authToken', authToken);
-                console.log('Navigating with username:', data.details);
-                navigation.navigate('Profile', {username:data.details.username});
+
+                await setGenericPassword('authToken', authToken);
+                
+                navigation.reset({
+                    index: 0,
+                    routes: [
+                       {
+                        name: 'Profile',
+                        params: {username:data.details.username},
+                       }
+                    ],
+                })
             }                 
         }
         catch (error) {

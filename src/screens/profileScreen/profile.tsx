@@ -3,7 +3,7 @@ import { ScrollView, View, Text, TouchableOpacity, TextInput, KeyboardAvoidingVi
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {profileStyles, shadowSettings} from './profile.styles';
 import { getDayName, getMonthName } from '../../utils/dateUtils';
-import { verifyToken } from '../../utils/authUtils';
+import { verifyToken, logoutUser } from '../../utils/authUtils';
 import LinearGradient from 'react-native-linear-gradient';
 import { RootStackParamList } from '../../navigation/screenNavigation';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -12,7 +12,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Shadow } from 'react-native-shadow-2';
 import AddTaskTypeModal from '../../modals/addTask';
 import SearchTaskModal from '../../modals/searchTask';
-import * as Keychain from 'react-native-keychain';
+import {getGenericPassword} from 'react-native-keychain';
 
 
 type ProfilScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Profile'>; // This tells the app that hey, im in the Home route and i want to know what other routes I can go into
@@ -36,7 +36,7 @@ const ProfileScreen = ({navigation, route}:Props) => {
            const tokenVerification = async () => {
 
                 let token = "";
-                const credentials = await Keychain.getGenericPassword();
+                const credentials = await getGenericPassword();
                
                 if (credentials){
                     token = credentials.password;
@@ -65,15 +65,27 @@ const ProfileScreen = ({navigation, route}:Props) => {
       const date = dateNow.getDate();
       const dateHeader = `${day}, ${month} ${date}`;
 
-    
+      const handleLogout = async () => {
+           
+           const success: boolean = await logoutUser();
+
+           if (success) {
+              navigation.reset({
+                index: 0,
+                routes: [{name: 'Login'}], 
+              });
+           }
+      }; 
+
+
       return (
          <SafeAreaView style={profileStyles.profileContainer}>
             <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios'? 'padding': 'height'} >
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <View style={{ flex: 1 }}>           
             <View style={profileStyles.headerContainer1}>
-               <TouchableOpacity style={profileStyles.userSettingsBtn}>
-                  <Ionicons name="person-outline" size={23} color="#000" />
+               <TouchableOpacity style={profileStyles.userSettingsBtn} onPress={()=>handleLogout()}>
+                  <Ionicons name="log-out-outline" size={23} color="#000" />
                </TouchableOpacity>             
             </View>
             <View style={profileStyles.headerContainer2}>

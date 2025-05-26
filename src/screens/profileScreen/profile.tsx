@@ -185,8 +185,9 @@ const ProfileScreen = ({navigation, route}:Props) => {
               
            </View>
 
-           <SearchTaskModal  visible={searchTaskModalVisible} onClose={()=>setSearchTaskModalVisible(false)} />
-           <AddTaskTypeModal visible={createTaskModalVisible} onClose={()=>setCreateTaskModalVisible(false)}/>
+           <SearchTaskModal  visible={searchTaskModalVisible} onClose={()=>setSearchTaskModalVisible(false)}/>
+                                                        
+           <AddTaskTypeModal visible={createTaskModalVisible} onNavigate={()=>navigation.navigate('SimpleTask')} onClose={()=>setCreateTaskModalVisible(false)} />
 
            </View>
            </TouchableWithoutFeedback>

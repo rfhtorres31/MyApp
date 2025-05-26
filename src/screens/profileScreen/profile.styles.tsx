@@ -158,7 +158,7 @@ export const profileStyles = StyleSheet.create ({
 
       featureTitle:{
         fontSize: RFPercentage(2.8),
-        fontFamily: 'Poppins-Medium',
+        fontFamily: 'Raleway-Bold',
         textAlign: 'center',
         marginLeft: '4%',
       },

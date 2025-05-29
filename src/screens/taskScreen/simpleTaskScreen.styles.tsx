@@ -53,9 +53,9 @@ export const simpleTaskScreenStyles = StyleSheet.create({
      bodyContainer: {
        height: bodyHeight,
        width: bodyWidth,
-    //    borderColor: 'blue',
-    //    borderWidth: 2,
-    //    borderStyle: 'solid',
+       borderColor: 'blue',
+       borderWidth: 2,
+       borderStyle: 'solid',
      alignItems: 'center',
      },
 
@@ -135,6 +135,42 @@ export const simpleTaskScreenStyles = StyleSheet.create({
        fontFamily: 'Raleway-Medium',
      },
 
+     categoryBoxBtn: {
+        borderColor: 'red',
+        borderWidth: 1.2,
+     }, 
+
+     dateField: {
+      //  borderColor: 'red',
+      //  borderStyle: 'solid',
+      //  borderWidth: 2,
+       width: bodyWidth,
+       height: bodyHeight * 0.13,
+       alignItems: 'center',
+     },
+
+     dateFieldTxt: {
+       paddingLeft: '3%',
+       width: bodyWidth,
+       height: bodyHeight * 0.13 * 0.4,
+       fontSize: RFPercentage(3),
+      //  borderColor: 'blue',
+      //  borderStyle: 'solid',
+      //  borderWidth: 2,
+     },
+
+     dateFieldBtnField: {
+       width: bodyWidth * 0.95,
+       height: bodyHeight * 0.13 * 0.6,
+       flex: 1,
+       borderColor: '#4a4a4a',
+       borderStyle: 'solid',
+       borderWidth: 0.5,
+       borderRadius: 15,
+       justifyContent: 'center',
+       paddingLeft: '3%',
+     }, 
+
 
 
 });
@@ -160,7 +196,7 @@ export const descriptionContainerStylesSettings = {
 
 export const customLabelStylesSettings = {
       colorFocused: '#000', // font color of the label
-      fontSizeFocused: RFPercentage(3), // fontsize of the label when it is floating
+      fontSizeFocused: RFPercentage(2.7), // fontsize of the label when it is floating
       fontSizeBlurred: RFPercentage(3), // fontsize of the label when it is inside the input
       topFocused: 0,
       leftFocused: 10,

@@ -10,6 +10,7 @@ import { FloatingLabelInput } from 'react-native-floating-label-input';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { RFPercentage } from "react-native-responsive-fontsize";
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import LinearGradient from 'react-native-linear-gradient';
 
 type SimpleTaskScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'SimpleTask'>;
 type Props = {
@@ -24,17 +25,40 @@ const SimpleTaskScreen = ({navigation}:Props) => {
      const [selectedCategory, setSelectedCategory] = useState<string | null>(null); // this means that this can hold either string or null value
      const [isStartDatePickerVisible, setStartDatePickerVisibility] = useState(false);
      const [isEndDatePickerVisible, setEndDatePickerVisibility] = useState(false);
-     const [selectedDateTime, setSelectedDateTime] = useState<Date | null>(null);
+
+     const [taskData, setTaskData] = useState({
+         title: '',
+         description: '',
+         category: '',
+         fromDate: '',
+         toDate: '',
+     }); 
+   
+
      const categories = ['Personal', 'Work', 'Home', 'Health', 'Bills', 'Shopping'];
      
      const currentDateTime = new Date(); // get the current datetime
      const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone; // get the current timezone of the user's device
      const currentTime = currentDateTime.toLocaleString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true, timeZone: userTimeZone}); // get the current time
-
-     const handleCategory = (category: string) => {
-        setSelectedCategory(prev=>(prev === category ? null : category));
-     };
     
+     // function for handling selection of category
+     const handleCategory = (category: string) => {
+        
+        if (selectedCategory === category) {
+           setSelectedCategory(null);
+           setTaskData(prev=>({
+              ...prev, 
+              category: '',
+           }));   
+        } else {
+            setSelectedCategory(prev=>(prev === category ? null : category));
+            setTaskData(prev=>({
+              ...prev, 
+              category: category,
+            }));  
+        }
+            
+     };
      
      const showStartDatePicker = () => setStartDatePickerVisibility(true);
      const hideStartDatePicker = () => setStartDatePickerVisibility(false);
@@ -43,16 +67,38 @@ const SimpleTaskScreen = ({navigation}:Props) => {
      const hideEndDatePicker = () => setEndDatePickerVisibility(false);
 
      const handleStartDateConfirm = (selectedDate: Date) => {
-          console.log(selectedDate);
-          setStartDate(selectedDate);
+          setStartDate(selectedDate); 
+          setTaskData(prev=>({
+          ...prev, 
+          fromDate: selectedDate.toLocaleString('en-US', 
+            { year: 'numeric', month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: true, timeZone: userTimeZone}),
+          }));  
           hideStartDatePicker();
      };
 
     const handleEndDateConfirm = (selectedDate: Date) => {
-          console.log(selectedDate);
           setEndDate(selectedDate);
+          setTaskData(prev=>({
+          ...prev, 
+          toDate: selectedDate.toLocaleString('en-US',
+           { year: 'numeric', month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: true, timeZone: userTimeZone}),
+          }));  
           hideEndDatePicker();
      };
+
+    const handleChange = (field:string, value:string) => {
+
+        setTaskData(
+            taskData => (
+                {...taskData, [field]:value}
+            )
+        );
+    };
+    
+    const handleSubmit = async () => {
+    
+       console.log(taskData);
+    };
 
 
      return (
@@ -65,16 +111,16 @@ const SimpleTaskScreen = ({navigation}:Props) => {
             </View>
             <View style={simpleTaskScreenStyles.bodyContainer}>
                 <View style={simpleTaskScreenStyles.inputField}>
-                  <FloatingLabelInput label="Title" containerStyles={containerStylesSettings} customLabelStyles={customLabelStylesSettings} labelStyles={labelStylesSettings} inputStyles={inputStylesSettings}/> 
+                  <FloatingLabelInput label="Title" value={taskData.title} onChangeText={value=>handleChange('title', value)} containerStyles={containerStylesSettings} customLabelStyles={customLabelStylesSettings} labelStyles={labelStylesSettings} inputStyles={inputStylesSettings}/> 
                 </View>
                 <View style={simpleTaskScreenStyles.descriptionField}>
-                  <FloatingLabelInput  label="Description" multiline containerStyles={descriptionContainerStylesSettings} customLabelStyles={customLabelStylesSettings} labelStyles={labelStylesSettings} inputStyles={inputStylesSettings}/> 
+                  <FloatingLabelInput  label="Description" value={taskData.description} onChangeText={value=>handleChange('description', value)} multiline containerStyles={descriptionContainerStylesSettings} customLabelStyles={customLabelStylesSettings} labelStyles={labelStylesSettings} inputStyles={inputStylesSettings}/> 
                 </View>
                 <View style={simpleTaskScreenStyles.categoryFieldContainer}>
                   <Text style={simpleTaskScreenStyles.categoryHeader}>Category</Text>
                   <View style={simpleTaskScreenStyles.categoryBody}>
                      {
-                      categories.map(category=>(
+                      categories.map(category => (
                          <TouchableOpacity key={category} style={[simpleTaskScreenStyles.categoryBox, selectedCategory === category && simpleTaskScreenStyles.categoryBoxBtn]} onPress={() => handleCategory(category)}>
                               <Text style={simpleTaskScreenStyles.categoryBoxTxt}>{category}</Text>
                          </TouchableOpacity>
@@ -108,9 +154,11 @@ const SimpleTaskScreen = ({navigation}:Props) => {
                        onConfirm={handleEndDateConfirm}
                        onCancel={hideEndDatePicker} />
                 </View>
-                <TouchableOpacity style={simpleTaskScreenStyles.submitBtn}>
-                  <Text style={[{textAlign: 'center', color: 'white', fontSize: RFPercentage(2.6), fontFamily: 'Raleway-Medium'}]}>Submit</Text>
-                </TouchableOpacity>
+                <LinearGradient colors={['#4ef2ef', '#2ec7e6']} style={simpleTaskScreenStyles.submitBtnContainer}>
+                  <TouchableOpacity style={simpleTaskScreenStyles.submitBtn} onPress={handleSubmit}>
+                    <Text style={[{textAlign: 'center', color: 'white', fontSize: RFPercentage(2.6), fontFamily: 'Raleway-Medium'}]}>Submit</Text>
+                  </TouchableOpacity>
+                </LinearGradient>
             </View>
          </SafeAreaView>
      );

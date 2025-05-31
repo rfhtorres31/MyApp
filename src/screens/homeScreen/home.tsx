@@ -17,7 +17,6 @@ type HomeScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'H
 type Props = {navigation:HomeScreenNavigationProp};
 
 
-
 const HomeScreen = ({navigation}:Props) => {
       
      const opacAnim = useRef(new Animated.Value(0)).current; // Starting value is 0

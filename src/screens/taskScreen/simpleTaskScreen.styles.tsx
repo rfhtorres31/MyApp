@@ -140,7 +140,7 @@ export const simpleTaskScreenStyles = StyleSheet.create({
      },
 
      categoryBoxBtn: {
-        borderColor: 'red',
+        borderColor: '#2ec7e6',
         borderWidth: 1.2,
      }, 
 
@@ -205,17 +205,24 @@ export const simpleTaskScreenStyles = StyleSheet.create({
      marginLeft: '4%',
     }, 
 
-    submitBtn: {
+    submitBtnContainer: {
       height: bodyHeight * 0.07,
-      width: bodyWidth * 0.4,
+      width: bodyWidth * 0.9,
       // borderColor: 'red',
       // borderWidth: 1,
       // borderStyle: 'solid',
-      marginTop: '5%',
+      marginTop: '10%',
       borderRadius: 15,
+    },
+
+    submitBtn: {
+      height: bodyHeight * 0.07,
+      width: bodyWidth * 0.9,
+      // borderColor: 'red',
+      // borderWidth: 1,
+      // borderStyle: 'solid',
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor: '#2ec7e6'
     }, 
 
     

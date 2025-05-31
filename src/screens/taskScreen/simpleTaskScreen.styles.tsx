@@ -13,6 +13,10 @@ const bodyWidth = width * 1;
 const categoryFieldContainerHeight = bodyHeight * 0.25;
 const categoryFieldContainerWidth = bodyWidth * 1;
 
+const startDateFieldContainerHeight = bodyHeight * 0.15;
+const startDateFieldContainerWidth = bodyWidth * 1;
+
+
 export const simpleTaskScreenStyles = StyleSheet.create({
 
 
@@ -53,9 +57,9 @@ export const simpleTaskScreenStyles = StyleSheet.create({
      bodyContainer: {
        height: bodyHeight,
        width: bodyWidth,
-       borderColor: 'blue',
-       borderWidth: 2,
-       borderStyle: 'solid',
+      //  borderColor: 'blue',
+      //  borderWidth: 2,
+      //  borderStyle: 'solid',
      alignItems: 'center',
      },
 
@@ -90,9 +94,9 @@ export const simpleTaskScreenStyles = StyleSheet.create({
      categoryFieldContainer: {
        height: categoryFieldContainerHeight,
        width: categoryFieldContainerWidth,
-    //    borderColor: 'orange',
-    //    borderWidth: 2,
-    //    borderStyle: 'solid',
+      //  borderColor: 'orange',
+      //  borderWidth: 2,
+      //  borderStyle: 'solid',
      },
 
      categoryHeader: {
@@ -109,9 +113,9 @@ export const simpleTaskScreenStyles = StyleSheet.create({
      categoryBody: {
        height: categoryFieldContainerHeight * 0.8,
        width: categoryFieldContainerWidth,
-       borderColor: 'blue',
-       borderWidth: 2,
-       borderStyle: 'solid',
+      //  borderColor: 'blue',
+      //  borderWidth: 2,
+      //  borderStyle: 'solid',
        flexDirection: 'row',
        flexWrap: 'wrap',
        paddingTop: '2%',
@@ -140,36 +144,85 @@ export const simpleTaskScreenStyles = StyleSheet.create({
         borderWidth: 1.2,
      }, 
 
-     dateField: {
+     startDateFieldContainer: {
+       width: startDateFieldContainerWidth,
+       height: startDateFieldContainerHeight * 0.9, 
       //  borderColor: 'red',
+      //  borderWidth: 1,
       //  borderStyle: 'solid',
-      //  borderWidth: 2,
-       width: bodyWidth,
-       height: bodyHeight * 0.13,
-       alignItems: 'center',
-     },
-
-     dateFieldTxt: {
-       paddingLeft: '3%',
-       width: bodyWidth,
-       height: bodyHeight * 0.13 * 0.4,
-       fontSize: RFPercentage(3),
-      //  borderColor: 'blue',
-      //  borderStyle: 'solid',
-      //  borderWidth: 2,
-     },
-
-     dateFieldBtnField: {
-       width: bodyWidth * 0.95,
-       height: bodyHeight * 0.13 * 0.6,
-       flex: 1,
-       borderColor: '#4a4a4a',
-       borderStyle: 'solid',
-       borderWidth: 0.5,
-       borderRadius: 15,
+       flexDirection: 'row',
        justifyContent: 'center',
-       paddingLeft: '3%',
      }, 
+
+    //  endDateFieldContainer: {
+    //    width: endDateFieldContainerWidth,
+    //    height: endDateFieldContainerHeight, 
+    //    borderColor: 'red',
+    //    borderWidth: 1,
+    //    borderStyle: 'solid',
+    //  }, 
+
+    startDate: {
+      height: startDateFieldContainerHeight * 0.9,
+      width: startDateFieldContainerWidth * 0.45,
+      // borderColor: 'red',
+      // borderWidth: 1,
+      // borderStyle: 'solid',
+    }, 
+
+    dateTimeHeader: {
+      textAlign: 'center',
+      fontFamily: 'Raleway-Medium',
+      fontSize: RFPercentage(3),
+      marginBottom: '2%',
+      // borderColor: 'red',
+      // borderWidth: 1,
+      // borderStyle: 'solid',
+    }, 
+
+    dateTimeContent: {
+      flex: 1,
+      borderColor: '#4a4a4a',
+      borderWidth: 0.5,
+      borderStyle: 'solid',
+      borderRadius: 15,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+
+    dateTimeContentTxt: {
+      fontSize: RFPercentage(2.1),
+      fontFamily: 'Raleway-Regular',
+      textAlign: 'center',
+    },
+     
+    endDate: {
+     height: startDateFieldContainerHeight * 0.9,
+     width: startDateFieldContainerWidth * 0.45,
+    //  borderColor: 'red',
+    //  borderWidth: 1,
+    //  borderStyle: 'solid',
+     marginLeft: '4%',
+    }, 
+
+    submitBtn: {
+      height: bodyHeight * 0.07,
+      width: bodyWidth * 0.4,
+      // borderColor: 'red',
+      // borderWidth: 1,
+      // borderStyle: 'solid',
+      marginTop: '5%',
+      borderRadius: 15,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: '#2ec7e6'
+    }, 
+
+    
+
+
+
+  
 
 
 
@@ -196,8 +249,11 @@ export const descriptionContainerStylesSettings = {
 
 export const customLabelStylesSettings = {
       colorFocused: '#000', // font color of the label
+      colorBlurred: '#000',
       fontSizeFocused: RFPercentage(2.7), // fontsize of the label when it is floating
       fontSizeBlurred: RFPercentage(3), // fontsize of the label when it is inside the input
+      fontFamilyFocused: 'Raleway-Regular',
+      fontFamilyBlurred: 'Raleway-Regular',
       topFocused: 0,
       leftFocused: 10,
 };

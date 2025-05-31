@@ -8,6 +8,8 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { TextInput as PaperTextInput } from 'react-native-paper';
 import { FloatingLabelInput } from 'react-native-floating-label-input';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { RFPercentage } from "react-native-responsive-fontsize";
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
 
 type SimpleTaskScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'SimpleTask'>;
 type Props = {
@@ -17,11 +19,12 @@ type Props = {
 
 const SimpleTaskScreen = ({navigation}:Props) => {
       
-     const [date, setDate] = useState<Date | null>(null);
-     const [time, setTime] = useState<Date | null>(null);
+     const [startDate, setStartDate] = useState<Date | null>(null);
+     const [endDate, setEndDate] = useState<Date | null>(null);
      const [selectedCategory, setSelectedCategory] = useState<string | null>(null); // this means that this can hold either string or null value
-     const [showDate, setShowDate] = useState(false);
-     const [showTime, setShowTime] = useState(false);
+     const [isStartDatePickerVisible, setStartDatePickerVisibility] = useState(false);
+     const [isEndDatePickerVisible, setEndDatePickerVisibility] = useState(false);
+     const [selectedDateTime, setSelectedDateTime] = useState<Date | null>(null);
      const categories = ['Personal', 'Work', 'Home', 'Health', 'Bills', 'Shopping'];
      
      const currentDateTime = new Date(); // get the current datetime
@@ -32,25 +35,25 @@ const SimpleTaskScreen = ({navigation}:Props) => {
         setSelectedCategory(prev=>(prev === category ? null : category));
      };
     
-     // DateTimePicker Component throws two arguments, event which tells the behaviour of the user and the selected date                             
-     // Optional Chaining (?) here is used, since selectedDate can be null or has value. This prevents TypeError: Cannot read properties of undefined (reading 'toISOString')
-     const onChangeDate = (event: any, selectedDate?: Date) => {
+     
+     const showStartDatePicker = () => setStartDatePickerVisibility(true);
+     const hideStartDatePicker = () => setStartDatePickerVisibility(false);
 
-         // If user selects ok, event.type==='set', if not, event.type==='dismissed'
-         if (event.type === 'set' && selectedDate) {
-             setDate(selectedDate);        
-         }     
-         setShowDate(false);
+     const showEndDatePicker = () => setEndDatePickerVisibility(true);
+     const hideEndDatePicker = () => setEndDatePickerVisibility(false);
+
+     const handleStartDateConfirm = (selectedDate: Date) => {
+          console.log(selectedDate);
+          setStartDate(selectedDate);
+          hideStartDatePicker();
      };
 
-     const onChangeTime= (event: any, selectedTime?: Date) => {
-
-         // If user selects ok, event.type==='set', if not, event.type==='dismissed'
-         if (event.type === 'set' && selectedTime) {
-             setTime(selectedTime);        
-         }     
-         setShowTime(false);
+    const handleEndDateConfirm = (selectedDate: Date) => {
+          console.log(selectedDate);
+          setEndDate(selectedDate);
+          hideEndDatePicker();
      };
+
 
      return (
          <SafeAreaView style={simpleTaskScreenStyles.taskContainer}>
@@ -79,22 +82,35 @@ const SimpleTaskScreen = ({navigation}:Props) => {
                      }
                   </View>
                 </View>
-                <View style={simpleTaskScreenStyles.dateField}>
-                   <Text style={simpleTaskScreenStyles.dateFieldTxt}>Start Date</Text>
-                   <TouchableOpacity style={simpleTaskScreenStyles.dateFieldBtnField} onPress={()=>setShowDate(prev=>!prev)}>
-                        <Text>{date ? date.toDateString(): new Date().toDateString()}</Text>
-                   </TouchableOpacity>
-                   {/* value props of DateTimePicker always expect a Date format if the date doesn't have value, put the current date */}
-                   {showDate && <DateTimePicker value={date || new Date()} mode="date" display={Platform.OS === 'ios' ? 'spinner' : 'default'} onChange={onChangeDate}/>}
+                <View style={simpleTaskScreenStyles.startDateFieldContainer}>
+                  <View style={simpleTaskScreenStyles.startDate}>
+                     <Text style={simpleTaskScreenStyles.dateTimeHeader}>From</Text>
+                     <TouchableOpacity style={simpleTaskScreenStyles.dateTimeContent} onPress={showStartDatePicker}>
+                        <Text style={simpleTaskScreenStyles.dateTimeContentTxt}>{startDate? startDate.toLocaleDateString() : 'Select Start Date'}</Text>
+                        <Text style={simpleTaskScreenStyles.dateTimeContentTxt}>{startDate? startDate.toLocaleTimeString() : ''}</Text>
+                     </TouchableOpacity>
+                  </View>
+                  <View style={simpleTaskScreenStyles.endDate}> 
+                     <Text style={simpleTaskScreenStyles.dateTimeHeader}>To</Text>
+                     <TouchableOpacity style={simpleTaskScreenStyles.dateTimeContent} onPress={showEndDatePicker}>
+                        <Text style={simpleTaskScreenStyles.dateTimeContentTxt}>{endDate? endDate.toLocaleDateString() : 'Select End Date'}</Text>
+                        <Text style={simpleTaskScreenStyles.dateTimeContentTxt}>{endDate? endDate.toLocaleTimeString() : ''}</Text>
+                     </TouchableOpacity>
+                  </View>
+                  <DateTimePickerModal 
+                       isVisible={isStartDatePickerVisible} 
+                       mode="datetime"
+                       onConfirm={handleStartDateConfirm}
+                       onCancel={hideStartDatePicker} />
+                  <DateTimePickerModal 
+                       isVisible={isEndDatePickerVisible} 
+                       mode="datetime"
+                       onConfirm={handleEndDateConfirm}
+                       onCancel={hideEndDatePicker} />
                 </View>
-                <View style={simpleTaskScreenStyles.dateField}>
-                   <Text style={simpleTaskScreenStyles.dateFieldTxt}>Start Time</Text>
-                   <TouchableOpacity style={simpleTaskScreenStyles.dateFieldBtnField} onPress={()=>setShowDate(prev=>!prev)}>
-                        <Text>{date ? date.toDateString(): currentTime}</Text>
-                   </TouchableOpacity>
-                   {/* value props of DateTimePicker always expect a Date format if the date doesn't have value, put the current date */}
-                   {showDate && <DateTimePicker value={time || new Date()} mode="time" display={Platform.OS === 'ios' ? 'spinner' : 'default'} onChange={onChangeTime}/>}
-                </View>
+                <TouchableOpacity style={simpleTaskScreenStyles.submitBtn}>
+                  <Text style={[{textAlign: 'center', color: 'white', fontSize: RFPercentage(2.6), fontFamily: 'Raleway-Medium'}]}>Submit</Text>
+                </TouchableOpacity>
             </View>
          </SafeAreaView>
      );

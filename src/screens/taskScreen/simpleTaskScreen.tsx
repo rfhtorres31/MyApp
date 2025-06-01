@@ -11,6 +11,9 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { RFPercentage } from "react-native-responsive-fontsize";
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import LinearGradient from 'react-native-linear-gradient';
+import {BACKEND_URL} from '@env'
+import {getGenericPassword } from 'react-native-keychain';
+import { verifyToken } from '../../utils/authUtils';
 
 type SimpleTaskScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'SimpleTask'>;
 type Props = {
@@ -40,7 +43,6 @@ const SimpleTaskScreen = ({navigation}:Props) => {
      const currentDateTime = new Date(); // get the current datetime
      const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone; // get the current timezone of the user's device
      const currentTime = currentDateTime.toLocaleString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true, timeZone: userTimeZone}); // get the current time
-    
      // function for handling selection of category
      const handleCategory = (category: string) => {
         
@@ -95,12 +97,54 @@ const SimpleTaskScreen = ({navigation}:Props) => {
         );
     };
     
+
+
     const handleSubmit = async () => {
     
-       console.log(taskData);
+       try {
+           
+         if (!taskData) {
+            throw new Error("No Task Data");
+         }
+         
+         const credentials = await getGenericPassword();
+         
+         if (!credentials) {
+            throw new Error("No credentials found for token");
+         }
+
+         const authToken = credentials.password;
+         const isTokenValid = await verifyToken(authToken);
+
+         if (!isTokenValid) {
+            navigation.navigate('Home');
+            return; // Stop further execution
+         }
+
+         const response = await fetch(`${BACKEND_URL}/api/task`, {
+                     method : 'POST',
+                     headers: {
+                         'Authorization': `Bearer ${authToken}`, 
+                         'Content-Type': 'application/json',
+                     },
+                     body: JSON.stringify(taskData)
+         });
+        
+       
+        const parsedResponse = await response.json();
+        console.log(parsedResponse);
+
+        
+
+
+
+       }
+       catch (err) {
+         console.error(err);
+       }
     };
 
-
+     
      return (
          <SafeAreaView style={simpleTaskScreenStyles.taskContainer}>
             <View style={simpleTaskScreenStyles.headerContainer}>
@@ -128,19 +172,17 @@ const SimpleTaskScreen = ({navigation}:Props) => {
                      }
                   </View>
                 </View>
-                <View style={simpleTaskScreenStyles.startDateFieldContainer}>
+                <View style={simpleTaskScreenStyles.dateFieldContainer}>
                   <View style={simpleTaskScreenStyles.startDate}>
                      <Text style={simpleTaskScreenStyles.dateTimeHeader}>From</Text>
                      <TouchableOpacity style={simpleTaskScreenStyles.dateTimeContent} onPress={showStartDatePicker}>
-                        <Text style={simpleTaskScreenStyles.dateTimeContentTxt}>{startDate? startDate.toLocaleDateString() : 'Select Start Date'}</Text>
-                        <Text style={simpleTaskScreenStyles.dateTimeContentTxt}>{startDate? startDate.toLocaleTimeString() : ''}</Text>
+                        <Text style={simpleTaskScreenStyles.dateTimeContentTxt}>{startDate? startDate.toLocaleString().split(",").join("\n") : 'Select Start Date'}</Text>
                      </TouchableOpacity>
                   </View>
                   <View style={simpleTaskScreenStyles.endDate}> 
                      <Text style={simpleTaskScreenStyles.dateTimeHeader}>To</Text>
                      <TouchableOpacity style={simpleTaskScreenStyles.dateTimeContent} onPress={showEndDatePicker}>
-                        <Text style={simpleTaskScreenStyles.dateTimeContentTxt}>{endDate? endDate.toLocaleDateString() : 'Select End Date'}</Text>
-                        <Text style={simpleTaskScreenStyles.dateTimeContentTxt}>{endDate? endDate.toLocaleTimeString() : ''}</Text>
+                        <Text style={simpleTaskScreenStyles.dateTimeContentTxt}>{endDate? endDate.toLocaleString().split(",").join("\n") : 'Select End Date'}</Text>
                      </TouchableOpacity>
                   </View>
                   <DateTimePickerModal 

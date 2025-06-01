@@ -45,7 +45,7 @@ export const LoginScreen = ({ navigation }: Props) => {
                  headers: {
                     "Content-Type": "application/json",
                  },
-                 body: JSON.stringify(loginData),
+                 body: JSON.stringify(loginData), // Converts a Javascript Object to JSON String
             });
 
             const data = await response.json(); // parsed the JSON data from the fetch response

@@ -13,8 +13,8 @@ const bodyWidth = width * 1;
 const categoryFieldContainerHeight = bodyHeight * 0.25;
 const categoryFieldContainerWidth = bodyWidth * 1;
 
-const startDateFieldContainerHeight = bodyHeight * 0.15;
-const startDateFieldContainerWidth = bodyWidth * 1;
+const dateFieldContainerHeight = bodyHeight * 0.15;
+const dateFieldContainerWidth = bodyWidth * 1;
 
 
 export const simpleTaskScreenStyles = StyleSheet.create({
@@ -144,9 +144,9 @@ export const simpleTaskScreenStyles = StyleSheet.create({
         borderWidth: 1.2,
      }, 
 
-     startDateFieldContainer: {
-       width: startDateFieldContainerWidth,
-       height: startDateFieldContainerHeight * 0.9, 
+     dateFieldContainer: {
+       width: dateFieldContainerWidth,
+       height: dateFieldContainerHeight * 0.9, 
       //  borderColor: 'red',
       //  borderWidth: 1,
       //  borderStyle: 'solid',
@@ -163,8 +163,8 @@ export const simpleTaskScreenStyles = StyleSheet.create({
     //  }, 
 
     startDate: {
-      height: startDateFieldContainerHeight * 0.9,
-      width: startDateFieldContainerWidth * 0.45,
+      height: dateFieldContainerHeight * 0.9,
+      width: dateFieldContainerWidth * 0.45,
       // borderColor: 'red',
       // borderWidth: 1,
       // borderStyle: 'solid',
@@ -191,14 +191,17 @@ export const simpleTaskScreenStyles = StyleSheet.create({
     },
 
     dateTimeContentTxt: {
-      fontSize: RFPercentage(2.1),
+      fontSize: RFPercentage(2.4),
       fontFamily: 'Raleway-Regular',
       textAlign: 'center',
+    //  borderColor: 'red',
+    //  borderWidth: 1,
+    //  borderStyle: 'solid',
     },
      
     endDate: {
-     height: startDateFieldContainerHeight * 0.9,
-     width: startDateFieldContainerWidth * 0.45,
+     height: dateFieldContainerHeight * 0.9,
+     width: dateFieldContainerWidth * 0.45,
     //  borderColor: 'red',
     //  borderWidth: 1,
     //  borderStyle: 'solid',

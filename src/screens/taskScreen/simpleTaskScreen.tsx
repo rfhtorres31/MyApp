@@ -14,6 +14,8 @@ import LinearGradient from 'react-native-linear-gradient';
 import {BACKEND_URL} from '@env'
 import {getGenericPassword } from 'react-native-keychain';
 import { verifyToken } from '../../utils/authUtils';
+import { Alert } from 'react-native';
+import Toast from 'react-native-toast-message';
 
 type SimpleTaskScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'SimpleTask'>;
 type Props = {
@@ -82,9 +84,10 @@ const SimpleTaskScreen = ({navigation}:Props) => {
           setEndDate(selectedDate);
           setTaskData(prev=>({
           ...prev, 
-          toDate: selectedDate.toLocaleString('en-US',
-           { year: 'numeric', month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: true, timeZone: userTimeZone}),
+           toDate: selectedDate.toLocaleString('en-US',
+            { year: 'numeric', month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: true, timeZone: userTimeZone}),
           }));  
+
           hideEndDatePicker();
      };
 
@@ -97,7 +100,13 @@ const SimpleTaskScreen = ({navigation}:Props) => {
         );
     };
     
+    const handleBack = ()=> {
 
+          navigation.reset({
+                  index: 0,
+                  routes: [{name: 'Profile'}], 
+          });
+    };
 
     const handleSubmit = async () => {
     
@@ -106,7 +115,7 @@ const SimpleTaskScreen = ({navigation}:Props) => {
          if (!taskData) {
             throw new Error("No Task Data");
          }
-         
+         console.log(taskData);
          const credentials = await getGenericPassword();
          
          if (!credentials) {
@@ -130,9 +139,29 @@ const SimpleTaskScreen = ({navigation}:Props) => {
                      body: JSON.stringify(taskData)
          });
         
+       if (!response.ok) {
+          Alert.alert('Server Unavailable', 'Please try again later');
+          return; 
+       }
        
-        const parsedResponse = await response.json();
-        console.log(parsedResponse);
+       Toast.show({
+         type: 'success',
+         text1: 'Task created!',
+         text2: 'Your task was added successfully.',
+         visibilityTime: 3000, 
+         onHide: () =>  navigation.reset({
+                  index: 0,
+                  routes: [{name: 'Profile'}], 
+             })
+         });
+         
+
+
+       //   const parsedResponse = await response.json();
+       //   console.log(parsedResponse);
+
+
+
 
         
 
@@ -148,7 +177,7 @@ const SimpleTaskScreen = ({navigation}:Props) => {
      return (
          <SafeAreaView style={simpleTaskScreenStyles.taskContainer}>
             <View style={simpleTaskScreenStyles.headerContainer}>
-                <TouchableOpacity style={simpleTaskScreenStyles.backBtn} >
+                <TouchableOpacity style={simpleTaskScreenStyles.backBtn} onPress={handleBack}>
                     <Ionicons name="arrow-back-outline" size={30} color="#000" />
                 </TouchableOpacity>
                 <Text style={simpleTaskScreenStyles.headerTxt}>Add Task</Text>            
@@ -198,7 +227,7 @@ const SimpleTaskScreen = ({navigation}:Props) => {
                 </View>
                 <LinearGradient colors={['#4ef2ef', '#2ec7e6']} style={simpleTaskScreenStyles.submitBtnContainer}>
                   <TouchableOpacity style={simpleTaskScreenStyles.submitBtn} onPress={handleSubmit}>
-                    <Text style={[{textAlign: 'center', color: 'white', fontSize: RFPercentage(2.6), fontFamily: 'Raleway-Medium'}]}>Submit</Text>
+                    <Text style={[{textAlign: 'center', color: 'white', fontSize: RFPercentage(2.6), fontFamily: 'Raleway-Medium'}]}>Create Task</Text>
                   </TouchableOpacity>
                 </LinearGradient>
             </View>

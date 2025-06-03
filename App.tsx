@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationContainer } from '@react-navigation/native';
 import ScreenNavigator from './src/navigation/screenNavigation';
-
+import Toast from 'react-native-toast-message';
 
 const PERSISTENCE_KEY = 'NAVIGATION_STATE_V1';
 
@@ -39,9 +39,13 @@ const App = () => {
   }
 
   return (
+     <>
        <NavigationContainer initialState={initialState} onStateChange={(state)=>AsyncStorage.setItem(PERSISTENCE_KEY, JSON.stringify(state))}>
           <ScreenNavigator/>
        </NavigationContainer>
+
+        <Toast />
+     </>
   );
 
 };

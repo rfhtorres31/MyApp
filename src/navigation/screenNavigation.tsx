@@ -1,5 +1,5 @@
 import React from 'react';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createNativeStackNavigator,   } from '@react-navigation/native-stack';
 import RegisterScreen from '../screens/registerScreen/register';
 import {LoginScreen} from '../screens/loginScreen/login';
 import HomeScreen from '../screens/homeScreen/home';
@@ -21,7 +21,7 @@ const Stack = createNativeStackNavigator<RootStackParamList>(); // Properly type
 
 const ScreenNavigator = () => {
   return (
-        <Stack.Navigator initialRouteName='Home' screenOptions={{ headerShown: false, animation: 'slide_from_right' }}>
+        <Stack.Navigator initialRouteName='Home' screenOptions={{ headerShown: false, animation: 'fade', }}>
           <Stack.Screen name="Home" component={HomeScreen as React.ComponentType<any>} /> 
           <Stack.Screen name="Register" component={RegisterScreen as React.ComponentType<any>} />
           <Stack.Screen name="Login" component={LoginScreen as React.ComponentType<any>} />

@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import { ScrollView, View, Text, TouchableOpacity, TextInput, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import {ScrollView, View, Text, TouchableOpacity, TextInput, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {profileStyles, shadowSettings} from './profile.styles';
 import { getDayName, getMonthName } from '../../utils/dateUtils';
@@ -13,7 +13,8 @@ import { Shadow } from 'react-native-shadow-2';
 import AddTaskTypeModal from '../../modals/addTask';
 import SearchTaskModal from '../../modals/searchTask';
 import {getGenericPassword} from 'react-native-keychain';
-
+import { BACKEND_URL } from '@env';
+import { jwtDecode } from 'jwt-decode';
 
 type ProfilScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Profile'>; // This tells the app that hey, im in the Home route and i want to know what other routes I can go into
 type ProfileScreenRouteProp = RouteProp<RootStackParamList, 'Profile'>;
@@ -23,6 +24,13 @@ type Props = {
     route:ProfileScreenRouteProp
 };
 
+type payloadFormat = {
+   id: string,
+   jwtID: string,
+   name: string,
+   iat: number,
+   exp: number,
+};
 
 const ProfileScreen = ({navigation, route}:Props) => {
        
@@ -32,29 +40,53 @@ const ProfileScreen = ({navigation, route}:Props) => {
       const dateNow = new Date();
 
       useEffect(()=>{
-       
+            
+           let userID = "";
            const tokenVerification = async () => {
 
-                let token = "";
-                const credentials = await getGenericPassword();
-               
-                if (credentials){
-                    token = credentials.password;
-                }
+                try {
 
-                // if token is not found, redirect to home page
-                if (!token) {
-                    console.log("Executed");
-                    navigation.navigate('Home');
-                    return;  //execution stops here, it will not execute the next lines/process
+                    const credentials = await getGenericPassword();
+
+                    if (!credentials) {
+                       navigation.navigate('Home'); 
+                       return; 
+                    }
+
+                    const token = credentials.password;
+
+                    if (!token){
+                       navigation.navigate('Home'); 
+                       return; 
+                    }
+
+                    const isTokenValid = await verifyToken(token);
+
+                    if (!isTokenValid) {
+                        navigation.navigate('Home');
+                    }
+
+                    const payload = jwtDecode<payloadFormat>(token);
+
+                    userID = payload?.id;
+                    
+                    // get ongoing tasks
+                    const response = await fetch(`${BACKEND_URL}/api/get-task?userID=${userID}`, {
+                          method: 'GET', 
+                          headers: {
+                            'Content-Type': 'application/json',
+                          }
+                    });
+
+                    const parsedObj = await response.json();
+                    console.log(parsedObj);
+
                 }
-                
-                const isTokenValid = await verifyToken(token);
-                
-                // if token is invalid, redirect to home page
-                if (!isTokenValid) {
-                    navigation.navigate('Home');
-                }
+                catch (err){
+                  console.error(err);
+                  navigation.navigate('Home');
+                }            
+            
            }; 
 
            tokenVerification(); 
@@ -95,7 +127,7 @@ const ProfileScreen = ({navigation, route}:Props) => {
                <Text style={profileStyles.dateHeaderTxt}>{dateHeader}</Text>
             </View>  
            <View style={profileStyles.carouselContainer}>
-           <Text style={profileStyles.carouseHeader}>Categories</Text>
+           <Text style={profileStyles.carouselHeader}>Completed Tasks</Text>
            <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={profileStyles.carouselBody} contentContainerStyle={{flexDirection:'row', paddingRight: '3%', paddingTop: '3%', paddingBottom: '3%'}}>               
               <Shadow {...shadowSettings}>
                 <LinearGradient colors={['#eafcff', '#b3eaff']} style={profileStyles.featureContainer}>
@@ -167,7 +199,7 @@ const ProfileScreen = ({navigation, route}:Props) => {
            </View>
            <View style={profileStyles.mainContainer}>
              <View style={profileStyles.mainHeaderContainer}>
-                <Text style={profileStyles.mainHeaderTxt}>My Tasks</Text>
+                <Text style={profileStyles.mainHeaderTxt}>Ongoing Tasks</Text>
                 <TouchableOpacity style={profileStyles.searchBar} onPress={()=>setSearchTaskModalVisible(true)}>
                   <TextInput style={profileStyles.searchBarTxt} editable={false} placeholder="Search"/>
                   <Ionicons name="search" size={23} color="#4a4a4a" style={profileStyles.searchBtn}/>
@@ -188,7 +220,7 @@ const ProfileScreen = ({navigation, route}:Props) => {
            <SearchTaskModal  visible={searchTaskModalVisible} onClose={()=>setSearchTaskModalVisible(false)}/>
                                                         
            <AddTaskTypeModal visible={createTaskModalVisible} onNavigate={()=>navigation.navigate('SimpleTask')} onClose={()=>setCreateTaskModalVisible(false)} />
-
+           
            </View>
            </TouchableWithoutFeedback>
            </KeyboardAvoidingView>

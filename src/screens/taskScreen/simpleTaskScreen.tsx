@@ -130,7 +130,7 @@ const SimpleTaskScreen = ({navigation}:Props) => {
             return; // Stop further execution
          }
 
-         const response = await fetch(`${BACKEND_URL}/api/task`, {
+         const response = await fetch(`${BACKEND_URL}/api/add-task`, {
                      method : 'POST',
                      headers: {
                          'Authorization': `Bearer ${authToken}`, 
@@ -155,16 +155,6 @@ const SimpleTaskScreen = ({navigation}:Props) => {
              })
          });
          
-
-
-       //   const parsedResponse = await response.json();
-       //   console.log(parsedResponse);
-
-
-
-
-        
-
 
 
        }

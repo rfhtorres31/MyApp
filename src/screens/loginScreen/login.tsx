@@ -11,6 +11,7 @@ import {BACKEND_URL, BACKEND_URL_2} from '@env'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../navigation/screenNavigation';
 import {setGenericPassword} from 'react-native-keychain';
+import validator from 'validator';
 
 type LoginScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Login'>; // This tells the app that hey, im in the Login route and i want to know what other routes I can go into
 type Props = {navigation: LoginScreenNavigationProp};
@@ -32,13 +33,28 @@ export const LoginScreen = ({ navigation }: Props) => {
         );
     };
     
+
    const handleSubmit = async () => {
 
-        try {           
+        try {    
+            
+            // Check if one of the login input is empty
             if (loginData.loginInput.trim() === '' || loginData.password.trim() === '' ){
                  Alert.alert('Missing Information', 'Please fill in all the required inputs');
-                 throw new Error("Please fill in all the required input");
+                 return;
             }
+            
+            // Check if the user input is email and validate its format
+            const isInputEmail = loginData.loginInput.includes('@');
+            
+            if (isInputEmail) {
+                if (!validator.isEmail(loginData.loginInput)){
+                    Alert.alert('Format', 'Wrong email format');
+                    return; 
+                }
+            }
+
+
 
             const response = await fetch(`${BACKEND_URL}/api/auth/login`, {
                  method: 'POST',
@@ -50,10 +66,10 @@ export const LoginScreen = ({ navigation }: Props) => {
 
             const data = await response.json(); // parsed the JSON data from the fetch response
             
-            //=== Handle Error Response ===//
+            // Handle Error Response
             if (!response.ok){   
                 Alert.alert('Oops!', data.details);
-                throw new Error(JSON.stringify(data)); // convert the errorResponse object to a string
+                throw new Error(JSON.stringify(data)); 
             }
             
             // Token Storage

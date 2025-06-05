@@ -110,10 +110,10 @@ export const profileStyles = StyleSheet.create ({
           position: 'relative',
       },
 
-      carouseHeader: {
+      carouselHeader: {
          position: 'absolute',
          fontSize: RFPercentage(3),
-         fontFamily: 'Poppins-Medium',
+         fontFamily: 'Poppins-Regular',
          marginLeft: 18,
         //  borderColor: 'blue',
         //  borderWidth: 2,
@@ -199,7 +199,7 @@ export const profileStyles = StyleSheet.create ({
       mainHeaderTxt: {
         position: 'absolute',
         marginLeft: '5%',
-        fontSize: RFPercentage(3.2),
+        fontSize: RFPercentage(3),
         fontFamily: 'Poppins-Regular',
       },
 

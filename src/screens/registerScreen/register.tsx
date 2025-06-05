@@ -10,6 +10,7 @@ import { Alert } from 'react-native';
 import { BACKEND_URL } from '@env';
 import { RootStackParamList } from '../../navigation/screenNavigation';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import validator from 'validator';
 
 
 type RegisterScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Register'>; // This tells the app that hey, im in the Home route and i want to know what other routes I can go into
@@ -39,12 +40,19 @@ const RegisterScreen = ({ navigation }: Props) => {
     const handleSubmit = async () => {
        
        try {      
-           
+
+          // Form Validation
           if (formData.email.trim() === '' || formData.fullname.trim() === '' || formData.password.trim() === '' || formData.username.trim() === ''){
                Alert.alert('Missing Information', 'Please fill in all the required inputs');
-               throw new Error("One of the form input is empty");
+               return;
           }
-  
+
+          else if (!validator.isEmail(formData.email)) {
+             Alert.alert('Format', 'Wrong email address format');
+             return;
+          }
+
+          // formData sent to the backend thru API call
           const response = await fetch(`${BACKEND_URL}/api/auth/register`, {
                 method:'POST',
                 headers: {
@@ -53,12 +61,13 @@ const RegisterScreen = ({ navigation }: Props) => {
                 body: JSON.stringify(formData),           
           }); 
           
-          const data = await response.json(); // parsed the JSON data from the fetch response
+          // parsed the JSON data from the fetch response
+          const data = await response.json(); 
 
           if (!response.ok){   
 
              Alert.alert('Oops!', data.details);
-             throw new Error(JSON.stringify(data)); // This will go to through the catch block
+             throw new Error(JSON.stringify(data)); 
           }
 
           console.log(data);

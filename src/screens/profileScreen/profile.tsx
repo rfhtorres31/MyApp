@@ -12,6 +12,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Shadow } from 'react-native-shadow-2';
 import AddTaskTypeModal from '../../modals/addTask';
 import SearchTaskModal from '../../modals/searchTask';
+import Loader from '../../utils/loader/loader';
 import {getGenericPassword} from 'react-native-keychain';
 import { BACKEND_URL } from '@env';
 import { jwtDecode } from 'jwt-decode';
@@ -36,6 +37,7 @@ const ProfileScreen = ({navigation, route}:Props) => {
        
       const [createTaskModalVisible, setCreateTaskModalVisible] = useState(false);
       const [searchTaskModalVisible, setSearchTaskModalVisible] = useState(false);
+      const [loaderVisible, setLoaderVisible] = useState(false);
       const username = route?.params?.username ?? "test";
       const dateNow = new Date();
 
@@ -70,6 +72,9 @@ const ProfileScreen = ({navigation, route}:Props) => {
 
                     userID = payload?.id;
                     
+                    // display the loader
+                    setLoaderVisible(true);
+
                     // get ongoing tasks
                     const response = await fetch(`${BACKEND_URL}/api/get-task?userID=${userID}`, {
                           method: 'GET', 
@@ -79,6 +84,13 @@ const ProfileScreen = ({navigation, route}:Props) => {
                     });
 
                     const parsedObj = await response.json();
+
+                    // hide the loader 
+                    if (parsedObj) {
+                       setLoaderVisible(false);
+                    }
+
+  
                     console.log(parsedObj);
 
                 }
@@ -220,7 +232,7 @@ const ProfileScreen = ({navigation, route}:Props) => {
            <SearchTaskModal  visible={searchTaskModalVisible} onClose={()=>setSearchTaskModalVisible(false)}/>
                                                         
            <AddTaskTypeModal visible={createTaskModalVisible} onNavigate={()=>navigation.navigate('SimpleTask')} onClose={()=>setCreateTaskModalVisible(false)} />
-           
+           <Loader visible={loaderVisible} />
            </View>
            </TouchableWithoutFeedback>
            </KeyboardAvoidingView>

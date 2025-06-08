@@ -1,4 +1,4 @@
-import { BACKEND_URL } from "@env";
+import { BACKEND_URL, BACKEND_URL_2 } from "@env";
 import {getGenericPassword, resetGenericPassword} from 'react-native-keychain';
 
 
@@ -7,7 +7,7 @@ export const verifyToken = async (authToken :any): Promise<boolean> => {
          
       try {
             
-          const responseObj = await fetch(`${BACKEND_URL}/api/auth/verify-token`, {
+          const responseObj = await fetch(`${BACKEND_URL_2}/api/auth/verify-token`, {
                  method: 'GET',
                  headers: {
                     "Authorization": `Bearer ${authToken}`,
@@ -48,7 +48,7 @@ export const logoutUser = async (): Promise<any> => {
             }
 
             // This returns a Response Object, use .json() method to parse the content of it
-            const responseObj = await fetch(`${BACKEND_URL}/api/auth/logout`, {
+            const responseObj = await fetch(`${BACKEND_URL_2}/api/auth/logout`, {
                    method: 'GET',
                      headers: {
                         "Authorization": `Bearer ${authToken}`,

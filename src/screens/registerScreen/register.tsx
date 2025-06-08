@@ -7,7 +7,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import GoogleIcon from '../../../assets/icons/g-icon.svg';
 import FacebookIcon from '../../../assets/icons/fb-icon.svg';
 import { Alert } from 'react-native';
-import { BACKEND_URL } from '@env';
+import { BACKEND_URL, BACKEND_URL_2 } from '@env';
 import { RootStackParamList } from '../../navigation/screenNavigation';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import validator from 'validator';
@@ -53,7 +53,7 @@ const RegisterScreen = ({ navigation }: Props) => {
           }
 
           // formData sent to the backend thru API call
-          const response = await fetch(`${BACKEND_URL}/api/auth/register`, {
+          const response = await fetch(`${BACKEND_URL_2}/api/auth/register`, {
                 method:'POST',
                 headers: {
                   "Content-Type": "application/json",              

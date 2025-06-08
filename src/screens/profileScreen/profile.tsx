@@ -14,7 +14,7 @@ import AddTaskTypeModal from '../../modals/addTask';
 import SearchTaskModal from '../../modals/searchTask';
 import Loader from '../../utils/loader/loader';
 import {getGenericPassword} from 'react-native-keychain';
-import { BACKEND_URL } from '@env';
+import { BACKEND_URL, BACKEND_URL_2 } from '@env';
 import { jwtDecode } from 'jwt-decode';
 
 type ProfilScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Profile'>; // This tells the app that hey, im in the Home route and i want to know what other routes I can go into
@@ -33,11 +33,22 @@ type payloadFormat = {
    exp: number,
 };
 
+type taskObjFormat = {
+   title: string,
+   description: string,
+   from_date: string,
+   due_date: string,
+   category: string,
+   isCompleted: boolean,
+};
+
 const ProfileScreen = ({navigation, route}:Props) => {
        
       const [createTaskModalVisible, setCreateTaskModalVisible] = useState(false);
       const [searchTaskModalVisible, setSearchTaskModalVisible] = useState(false);
       const [loaderVisible, setLoaderVisible] = useState(false);
+      const [onGoingTask, setOnGoingTask] = useState<taskObjFormat[]>([]);
+      const [completedTask, setCompletedTask] = useState<taskObjFormat[]>([]);
       const username = route?.params?.username ?? "test";
       const dateNow = new Date();
 
@@ -76,7 +87,7 @@ const ProfileScreen = ({navigation, route}:Props) => {
                     setLoaderVisible(true);
 
                     // get ongoing tasks
-                    const response = await fetch(`${BACKEND_URL}/api/get-task?userID=${userID}`, {
+                    const response = await fetch(`${BACKEND_URL_2}/api/get-task?userID=${userID}`, {
                           method: 'GET', 
                           headers: {
                             'Content-Type': 'application/json',
@@ -87,14 +98,31 @@ const ProfileScreen = ({navigation, route}:Props) => {
 
                     // hide the loader 
                     if (parsedObj) {
+                       const taskObj: taskObjFormat[] = parsedObj?.content;
+                       console.log(taskObj);
+                       const onGoingTask: taskObjFormat[] = taskObj.filter(task => task.isCompleted === false);
+                       const completedTask: taskObjFormat[] = taskObj.filter(task => task.isCompleted === true);   
+                       const formattedOnGoingTask = onGoingTask.map(task => {
+                             const formatDate = (dateStr: string) => {
+                                    const date = new Date(dateStr);
+                                    const day = String(date.getUTCDate()).padStart(2, '0');
+                                    const month = String(date.getUTCMonth() + 1).padStart(2, '0');
+                                    return `${day}/${month}`;
+                             }; 
+
+                             return {
+                                ... task,
+                                from_date: formatDate(task.from_date),
+                                due_date: formatDate(task.due_date)
+                             }
+                       });
+
+                       setCompletedTask(completedTask);
+                       setOnGoingTask(formattedOnGoingTask);
                        setLoaderVisible(false);
                     }
-
-  
-                    console.log(parsedObj);
-
                 }
-                catch (err){
+                catch (err) {
                   console.error(err);
                   navigation.navigate('Home');
                 }            
@@ -142,10 +170,10 @@ const ProfileScreen = ({navigation, route}:Props) => {
            <Text style={profileStyles.carouselHeader}>Completed Tasks</Text>
            <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={profileStyles.carouselBody} contentContainerStyle={{flexDirection:'row', paddingRight: '3%', paddingTop: '3%', paddingBottom: '3%'}}>               
               <Shadow {...shadowSettings}>
-                <LinearGradient colors={['#eafcff', '#b3eaff']} style={profileStyles.featureContainer}>
+                <LinearGradient colors={['#455a64', '#455a64']} style={profileStyles.featureContainer}>
                   <TouchableOpacity style={profileStyles.featureBtn} onPress={()=>setCreateTaskModalVisible(true)}>
                      <View style={profileStyles.featureHeader}>
-                        <Ionicons name="person-circle-outline" size={24} color="#000"/>
+                        <Ionicons name="person-circle-outline" size={24} color="#fff"/>
                         <Text style={profileStyles.featureTitle}>Personal</Text>
                      </View>
                      <Text style={profileStyles.featureDesc}>Personal goals, self care, habits</Text>
@@ -210,27 +238,32 @@ const ProfileScreen = ({navigation, route}:Props) => {
            </ScrollView>
            </View>
            <View style={profileStyles.mainContainer}>
-             <View style={profileStyles.mainHeaderContainer}>
-                <Text style={profileStyles.mainHeaderTxt}>Ongoing Tasks</Text>
-                <TouchableOpacity style={profileStyles.searchBar} onPress={()=>setSearchTaskModalVisible(true)}>
-                  <TextInput style={profileStyles.searchBarTxt} editable={false} placeholder="Search"/>
-                  <Ionicons name="search" size={23} color="#4a4a4a" style={profileStyles.searchBtn}/>
-                </TouchableOpacity>
-             </View>
-           
-              
-              
+              <View style={profileStyles.mainHeaderContainer}>
+                 <Text style={profileStyles.mainHeaderTxt}>Ongoing Tasks</Text>
+                 <TouchableOpacity style={profileStyles.searchBar} onPress={()=>setSearchTaskModalVisible(true)}>
+                    <TextInput style={profileStyles.searchBarTxt} editable={false} placeholder="Search"/>
+                    <Ionicons name="search" size={23} color="#fff" style={profileStyles.searchBtn}/>
+                 </TouchableOpacity>
+              </View>
+              <ScrollView horizontal={false} showsVerticalScrollIndicator={true} style={profileStyles.taskContainer} contentContainerStyle={[{alignItems: 'center', paddingBottom: '5%'}]}>
+               {
+                  onGoingTask.map(task => (
+                      <LinearGradient colors={['#455a64', '#455a64']} style={profileStyles.task}>
+                        <TouchableOpacity style={[{flex: 1}]}>
+                           <Text style={profileStyles.title}>{task.title}</Text>
+                           <Text style={profileStyles.category}>{task.category}</Text>
+                           <Text style={profileStyles.dueDate}>Due on: {task.due_date}</Text>
+                        </TouchableOpacity>
+                      </LinearGradient>
+                  ))
 
-
-
-              
+               }
+              </ScrollView>
            </View>
            <View style={profileStyles.TestContainer}>
               
            </View>
-
-           <SearchTaskModal  visible={searchTaskModalVisible} onClose={()=>setSearchTaskModalVisible(false)}/>
-                                                        
+           <SearchTaskModal  visible={searchTaskModalVisible} onClose={()=>setSearchTaskModalVisible(false)}/>                                                      
            <AddTaskTypeModal visible={createTaskModalVisible} onNavigate={()=>navigation.navigate('SimpleTask')} onClose={()=>setCreateTaskModalVisible(false)} />
            <Loader visible={loaderVisible} />
            </View>

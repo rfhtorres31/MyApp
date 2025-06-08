@@ -11,7 +11,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { RFPercentage } from "react-native-responsive-fontsize";
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import LinearGradient from 'react-native-linear-gradient';
-import {BACKEND_URL} from '@env'
+import {BACKEND_URL, BACKEND_URL_2} from '@env'
 import {getGenericPassword } from 'react-native-keychain';
 import { verifyToken } from '../../utils/authUtils';
 import { Alert } from 'react-native';
@@ -45,6 +45,7 @@ const SimpleTaskScreen = ({navigation}:Props) => {
      const currentDateTime = new Date(); // get the current datetime
      const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone; // get the current timezone of the user's device
      const currentTime = currentDateTime.toLocaleString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true, timeZone: userTimeZone}); // get the current time
+     
      // function for handling selection of category
      const handleCategory = (category: string) => {
         
@@ -60,9 +61,10 @@ const SimpleTaskScreen = ({navigation}:Props) => {
               ...prev, 
               category: category,
             }));  
-        }
-            
+        }     
      };
+
+
      
      const showStartDatePicker = () => setStartDatePickerVisibility(true);
      const hideStartDatePicker = () => setStartDatePickerVisibility(false);
@@ -101,7 +103,6 @@ const SimpleTaskScreen = ({navigation}:Props) => {
     };
     
     const handleBack = ()=> {
-
           navigation.reset({
                   index: 0,
                   routes: [{name: 'Profile'}], 
@@ -111,11 +112,15 @@ const SimpleTaskScreen = ({navigation}:Props) => {
     const handleSubmit = async () => {
     
        try {
-           
-         if (!taskData) {
-            throw new Error("No Task Data");
+         
+         const isTaskDataEmpty = Object.values(taskData).some(value=>value === '');
+         console.log(isTaskDataEmpty);
+
+         if (isTaskDataEmpty) {
+            Alert.alert('Missing Information', 'Fill in all the required fields');
+            return;
          }
-         console.log(taskData);
+
          const credentials = await getGenericPassword();
          
          if (!credentials) {
@@ -130,7 +135,7 @@ const SimpleTaskScreen = ({navigation}:Props) => {
             return; // Stop further execution
          }
 
-         const response = await fetch(`${BACKEND_URL}/api/add-task`, {
+         const response = await fetch(`${BACKEND_URL_2}/api/add-task`, {
                      method : 'POST',
                      headers: {
                          'Authorization': `Bearer ${authToken}`, 
@@ -139,8 +144,12 @@ const SimpleTaskScreen = ({navigation}:Props) => {
                      body: JSON.stringify(taskData)
          });
         
+       const parsedResponse = await response.json();
+
        if (!response.ok) {
           Alert.alert('Server Unavailable', 'Please try again later');
+          const responsObj = await response.json();
+          console.log(responsObj);
           return; 
        }
        
@@ -149,10 +158,14 @@ const SimpleTaskScreen = ({navigation}:Props) => {
          text1: 'Task created!',
          text2: 'Your task was added successfully.',
          visibilityTime: 3000, 
-         onHide: () =>  navigation.reset({
+         onHide: () =>  {
+            setTimeout(()=>{
+              navigation.reset({
                   index: 0,
                   routes: [{name: 'Profile'}], 
              })
+            }, 1000);
+         }
          });
          
 
@@ -189,6 +202,7 @@ const SimpleTaskScreen = ({navigation}:Props) => {
                          </TouchableOpacity>
                       ))
                      }
+                     
                   </View>
                 </View>
                 <View style={simpleTaskScreenStyles.dateFieldContainer}>

@@ -12,10 +12,10 @@ const headerContainerWidth_2 = width * 1;
 const carouselContainerHeight = height * 0.25;
 const carouselContainerWidth = width * 1;
 
-const mainContainerHeight = height * 0.45;
+const mainContainerHeight = height * 0.5;
 const mainContainerWidth = width * 1;
 
-const searchBarContainerHeight = height * 0.11;
+const searchBarContainerHeight = height * 0.05;
 const searchBarContainerWidth = width * 1;
 
 
@@ -23,7 +23,7 @@ export const profileStyles = StyleSheet.create ({
 
       profileContainer: {
           flex: 1,
-          backgroundColor: 'white',
+          backgroundColor: '#232a31',
       }, 
 
       headerContainer1: {
@@ -91,6 +91,7 @@ export const profileStyles = StyleSheet.create ({
         marginTop: '-1.5%',
         fontSize: RFPercentage(2),
         fontFamily: 'Poppins-Light',
+        color: 'white',
         // borderColor: 'red',
         // borderWidth: 2,
         // borderStyle: 'solid',
@@ -98,7 +99,8 @@ export const profileStyles = StyleSheet.create ({
 
       introHeaderTxt1: {
          fontSize: RFPercentage(3),
-         fontFamily: 'Poppins-Bold'
+         fontFamily: 'Poppins-Bold',
+         color: 'white',
       }, 
 
       carouselContainer: {
@@ -119,6 +121,7 @@ export const profileStyles = StyleSheet.create ({
         //  borderWidth: 2,
         //  borderStyle: 'solid',
          top: '11%',
+         color: 'white'    
       },
 
       carouselBody: {
@@ -161,6 +164,7 @@ export const profileStyles = StyleSheet.create ({
         fontFamily: 'Raleway-Bold',
         textAlign: 'center',
         marginLeft: '4%',
+        color: 'white'
       },
 
       featureHeader: {
@@ -173,16 +177,16 @@ export const profileStyles = StyleSheet.create ({
          marginTop: '3%',
          fontSize: RFPercentage(2),
          fontFamily: 'Poppins-Regular',
-         color: '#4a4a4a',
+         color: '#f0c96d',
          textAlign: 'center',
       },
 
       mainContainer: {        
           height: mainContainerHeight,
           width: mainContainerWidth,
-          // borderColor: 'red',
-          // borderWidth: 2,
-          // borderStyle: 'solid',
+          borderColor: 'red',
+          borderWidth: 2,
+          borderStyle: 'solid',
       }, 
 
       mainHeaderContainer: {
@@ -190,25 +194,81 @@ export const profileStyles = StyleSheet.create ({
           height: mainContainerHeight * 0.2,
           width: mainContainerWidth,
           flexDirection: 'row',
-          // borderColor: 'red',
-          // borderWidth: 2,
-          // borderStyle: 'solid',
+          borderColor: 'red',
+          borderWidth: 2,
+          borderStyle: 'solid',
           alignItems: 'center',      
       },
+
+      taskContainer : {
+          height: mainContainerHeight * 0.8,
+          width: mainContainerWidth,
+          borderColor: 'blue',
+          borderWidth: 2,
+          borderStyle: 'solid',
+      },
+
+      task: {
+          height: mainContainerHeight * 0.8 * 0.4,
+          width: mainContainerWidth * 0.9,
+          // borderColor: 'orange',
+          // borderWidth: 2,
+          // borderStyle: 'solid',
+          marginTop: '2.5%',
+          borderRadius: 15,
+      },
+
+      title: {
+         textAlign: 'left',
+         fontSize: RFPercentage(3.5),
+         fontFamily: 'Epilogue-Regular',
+        //  borderColor: 'orange',
+        //  borderWidth: 2,
+        //  borderStyle: 'solid',
+         paddingLeft: '4%',
+         color: 'white',
+         marginTop: '2%',
+      }, 
+
+      category: {
+         textAlign: 'left',
+         fontSize: RFPercentage(3),
+         fontFamily: 'Epilogue-Medium',
+        //  borderColor: 'orange',
+        //  borderWidth: 2,
+        //  borderStyle: 'solid',
+         paddingLeft: '4%',
+         color: 'white',
+         marginTop: '1%',
+      }, 
+
+     dueDate: {
+         textAlign: 'left',
+         fontSize: RFPercentage(2.5),
+         fontFamily: 'Epilogue-Regular',
+        //  borderColor: 'orange',
+        //  borderWidth: 2,
+        //  borderStyle: 'solid',
+         paddingLeft: '4%',
+         color: 'white',
+         marginTop: '2.2%'
+      }, 
 
       mainHeaderTxt: {
         position: 'absolute',
         marginLeft: '5%',
         fontSize: RFPercentage(3),
         fontFamily: 'Poppins-Regular',
+        color: 'white',
       },
 
       TestContainer: {
-        height: searchBarContainerHeight,
-        width: searchBarContainerWidth,
+        // height: searchBarContainerHeight,
+        // width: searchBarContainerWidth,
+        flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        borderColor: 'red',
+        borderColor: 'blue',
         borderWidth: 2,
         borderStyle: 'solid',         
       },

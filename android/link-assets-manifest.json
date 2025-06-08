@@ -2,6 +2,78 @@
   "migIndex": 1,
   "data": [
     {
+      "path": "assets/fonts/Epilogue-Black.ttf",
+      "sha1": "ca7b93cdcccae19fa21d76aa128709d6aeaad892"
+    },
+    {
+      "path": "assets/fonts/Epilogue-BlackItalic.ttf",
+      "sha1": "1ea0e7ff66f2d9dbfee9c8028b00100730a818d1"
+    },
+    {
+      "path": "assets/fonts/Epilogue-Bold.ttf",
+      "sha1": "595f05737a3905e59c9adb7595ac987274692f5c"
+    },
+    {
+      "path": "assets/fonts/Epilogue-BoldItalic.ttf",
+      "sha1": "99bef23c88c38aa9eb8542b5909208ea6c80a65c"
+    },
+    {
+      "path": "assets/fonts/Epilogue-ExtraBold.ttf",
+      "sha1": "72c43d91a55a6fc4f8b09331112b48383e5cd1a9"
+    },
+    {
+      "path": "assets/fonts/Epilogue-ExtraBoldItalic.ttf",
+      "sha1": "77f5662b9442c9d94f485377fffbdf8bb8ccbed1"
+    },
+    {
+      "path": "assets/fonts/Epilogue-ExtraLight.ttf",
+      "sha1": "f5bdc939c1ae58784bf0d2c073c236f6f7636f0d"
+    },
+    {
+      "path": "assets/fonts/Epilogue-ExtraLightItalic.ttf",
+      "sha1": "aaa97a00517293dc9f67e485c8675cea923587e0"
+    },
+    {
+      "path": "assets/fonts/Epilogue-Italic.ttf",
+      "sha1": "3af1dc6cb9a84b06569557b087fb75baf00224c8"
+    },
+    {
+      "path": "assets/fonts/Epilogue-Light.ttf",
+      "sha1": "3b2e6386da89650ce4c79192fc6eba1d160eacd4"
+    },
+    {
+      "path": "assets/fonts/Epilogue-LightItalic.ttf",
+      "sha1": "295b04da837265902c53b12ac867bb14b204fcf8"
+    },
+    {
+      "path": "assets/fonts/Epilogue-Medium.ttf",
+      "sha1": "bf48c96c93804f1a1225c72332533356c79f58ff"
+    },
+    {
+      "path": "assets/fonts/Epilogue-MediumItalic.ttf",
+      "sha1": "8b365ee6aac71ba03a613dca919aab1d5fcc7a44"
+    },
+    {
+      "path": "assets/fonts/Epilogue-Regular.ttf",
+      "sha1": "cfc6613ecbf83ef18949e2373323b737694d2ac7"
+    },
+    {
+      "path": "assets/fonts/Epilogue-SemiBold.ttf",
+      "sha1": "1bed1c8292905dd6d269327d44fcd611e294299b"
+    },
+    {
+      "path": "assets/fonts/Epilogue-SemiBoldItalic.ttf",
+      "sha1": "1034221d768006139d473d0ab0383a41d8f47394"
+    },
+    {
+      "path": "assets/fonts/Epilogue-Thin.ttf",
+      "sha1": "42dc04672022e45030efb9095e442ccca9fc3be0"
+    },
+    {
+      "path": "assets/fonts/Epilogue-ThinItalic.ttf",
+      "sha1": "8e47cc09e5ef6f991cb44b7588ac500b3d18b2dd"
+    },
+    {
       "path": "assets/fonts/Poppins-Black.ttf",
       "sha1": "645e04c53c6b5b35bce654a811ebce16af8aa721"
     },

@@ -59,6 +59,9 @@ const ProfileScreen = ({navigation, route}:Props) => {
 
                 try {
 
+                    // display the loader
+                    setLoaderVisible(true);
+
                     const credentials = await getGenericPassword();
 
                     if (!credentials) {
@@ -83,11 +86,10 @@ const ProfileScreen = ({navigation, route}:Props) => {
 
                     userID = payload?.id;
                     
-                    // display the loader
-                    setLoaderVisible(true);
+
 
                     // get ongoing tasks
-                    const response = await fetch(`${BACKEND_URL_2}/api/get-task?userID=${userID}`, {
+                    const response = await fetch(`${BACKEND_URL}/api/get-task?userID=${userID}`, {
                           method: 'GET', 
                           headers: {
                             'Content-Type': 'application/json',
@@ -119,7 +121,7 @@ const ProfileScreen = ({navigation, route}:Props) => {
 
                        setCompletedTask(completedTask);
                        setOnGoingTask(formattedOnGoingTask);
-                       setLoaderVisible(false);
+                       setLoaderVisible(false); // Hide the loader
                     }
                 }
                 catch (err) {
@@ -264,7 +266,7 @@ const ProfileScreen = ({navigation, route}:Props) => {
               
            </View>
            <SearchTaskModal  visible={searchTaskModalVisible} onClose={()=>setSearchTaskModalVisible(false)}/>                                                      
-           <AddTaskTypeModal visible={createTaskModalVisible} onNavigate={()=>navigation.navigate('SimpleTask')} onClose={()=>setCreateTaskModalVisible(false)} />
+           <AddTaskTypeModal visible={createTaskModalVisible} onNavigateSimple={()=>navigation.navigate('SimpleTask')} onNavigateComplex={()=>navigation.navigate('ComplexTask')} onClose={()=>setCreateTaskModalVisible(false)} />
            <Loader visible={loaderVisible} />
            </View>
            </TouchableWithoutFeedback>

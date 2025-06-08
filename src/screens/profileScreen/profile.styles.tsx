@@ -134,9 +134,6 @@ export const profileStyles = StyleSheet.create ({
       }, 
       
 
-
-
-
       featureContainer: {
          width: carouselContainerWidth * 0.5,
          height: carouselContainerHeight * 0.56,

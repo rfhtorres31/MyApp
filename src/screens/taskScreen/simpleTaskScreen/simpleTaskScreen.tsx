@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text, TextInput, TouchableOpacity, Platform} from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../../navigation/screenNavigation';
+import { RootStackParamList } from '../../../navigation/screenNavigation';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {simpleTaskScreenStyles, descriptionContainerStylesSettings, containerStylesSettings, customLabelStylesSettings, labelStylesSettings, inputStylesSettings} from './simpleTaskScreen.styles';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -13,7 +13,7 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import LinearGradient from 'react-native-linear-gradient';
 import {BACKEND_URL, BACKEND_URL_2} from '@env'
 import {getGenericPassword } from 'react-native-keychain';
-import { verifyToken } from '../../utils/authUtils';
+import { verifyToken } from '../../../utils/authUtils';
 import { Alert } from 'react-native';
 import Toast from 'react-native-toast-message';
 
@@ -135,7 +135,7 @@ const SimpleTaskScreen = ({navigation}:Props) => {
             return; // Stop further execution
          }
 
-         const response = await fetch(`${BACKEND_URL_2}/api/add-task`, {
+         const response = await fetch(`${BACKEND_URL}/api/add-task`, {
                      method : 'POST',
                      headers: {
                          'Authorization': `Bearer ${authToken}`, 

@@ -8,11 +8,12 @@ import { Shadow } from 'react-native-shadow-2';
 type AddTaskTypeModalProps = {
    visible: boolean,
    onClose: () => void, // this property can have a function that returns nothing/void
-   onNavigate: () => any
+   onNavigateSimple: () => void,
+   onNavigateComplex: () => void
 };
 
 
-const AddTaskTypeModal = ({visible,  onClose, onNavigate}: AddTaskTypeModalProps) => {
+const AddTaskTypeModal = ({visible,  onClose, onNavigateSimple, onNavigateComplex}: AddTaskTypeModalProps) => {
 
    
 
@@ -29,7 +30,7 @@ const AddTaskTypeModal = ({visible,  onClose, onNavigate}: AddTaskTypeModalProps
                 </View>
                 <View style={taskModalStyle.bodyContainer}>
                     <Shadow {...shadowSettings}>
-                      <TouchableOpacity style={taskModalStyle.taskBtn} onPress={onNavigate}>                 
+                      <TouchableOpacity style={taskModalStyle.taskBtn} onPress={onNavigateSimple}>                 
                          <View style={taskModalStyle.taskHeader}>
                             <Ionicons name="checkmark-circle-outline" size={22} color="#000"/> 
                             <Text style={taskModalStyle.taskTitle}>Simple Task</Text>  
@@ -38,7 +39,7 @@ const AddTaskTypeModal = ({visible,  onClose, onNavigate}: AddTaskTypeModalProps
                       </TouchableOpacity>
                     </Shadow>
                     <Shadow {...shadowSettings}>
-                      <TouchableOpacity style={taskModalStyle.taskBtn}>
+                      <TouchableOpacity style={taskModalStyle.taskBtn} onPress={onNavigateComplex}>
                         <View style={taskModalStyle.taskHeader}>
                             <Ionicons name="layers-outline" size={22} color="#000"/> 
                             <Text style={taskModalStyle.taskTitle}>Complex Task</Text>  

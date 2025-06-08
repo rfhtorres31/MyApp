@@ -56,7 +56,7 @@ export const LoginScreen = ({ navigation }: Props) => {
 
 
 
-            const response = await fetch(`${BACKEND_URL_2}/api/auth/login`, {
+            const response = await fetch(`${BACKEND_URL}/api/auth/login`, {
                  method: 'POST',
                  headers: {
                     "Content-Type": "application/json",

@@ -7,7 +7,7 @@ export const verifyToken = async (authToken :any): Promise<boolean> => {
          
       try {
             
-          const responseObj = await fetch(`${BACKEND_URL_2}/api/auth/verify-token`, {
+          const responseObj = await fetch(`${BACKEND_URL}/api/auth/verify-token`, {
                  method: 'GET',
                  headers: {
                     "Authorization": `Bearer ${authToken}`,

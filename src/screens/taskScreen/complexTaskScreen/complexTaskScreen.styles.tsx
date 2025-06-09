@@ -3,14 +3,17 @@ import { RFPercentage } from "react-native-responsive-fontsize";
 
 const {width, height} = Dimensions.get('window');
 
-const headerContainerHeight = height * 0.1;
+const headerContainerHeight = height * 0.07;
 const headerContainerWidth = width * 1;
 
-const bodyHeight = height * 0.9;
+const bodyHeight = height * 0.93;
 const bodyWidth = width * 1;
 
-const categoryFieldContainerHeight = bodyHeight * 0.25;
+const categoryFieldContainerHeight = bodyHeight * 0.22;
 const categoryFieldContainerWidth = bodyWidth * 1;
+
+const subTaskContainerHeight = bodyHeight * 0.3;
+const subTaskContainerWidth = bodyWidth * 1;
 
 export const complexTaskScreenStyles = StyleSheet.create({
      
@@ -34,16 +37,16 @@ export const complexTaskScreenStyles = StyleSheet.create({
      backBtn: {
        position: 'absolute',
        left: '2%',
-    //    borderColor: 'red',
-    //    borderWidth: 2,
-    //    borderStyle: 'solid',
+       borderColor: 'red',
+       borderWidth: 2,
+       borderStyle: 'solid',
      }, 
 
     headerTxt: {
        position: 'absolute', 
-    //    borderColor: 'red',
-    //    borderWidth: 2,
-    //    borderStyle: 'solid',
+       borderColor: 'red',
+       borderWidth: 2,
+       borderStyle: 'solid',
        fontSize: RFPercentage(3.3),
        fontFamily: 'Raleway-Regular',
        color: '#ffffff',
@@ -55,24 +58,25 @@ export const complexTaskScreenStyles = StyleSheet.create({
        borderColor: 'blue',
        borderWidth: 2,
        borderStyle: 'solid',
-      alignItems: 'center',
+       alignItems: 'center',
      },
 
     inputField: {
-       height: bodyHeight * 0.15,
-       width: bodyWidth * 0.95,
-    //    borderColor: 'orange',
-    //    borderWidth: 2,
-    //    borderStyle: 'solid',
+       height: bodyHeight * 0.13,
+       width: bodyWidth * 0.96,
+       borderColor: 'orange',
+       borderWidth: 2,
+       borderStyle: 'solid',
      },
 
     descriptionField: {
-       height: bodyHeight * 0.17,
-       width: bodyWidth * 0.95,
-    //    borderColor: 'orange',
-    //    borderWidth: 2,
-    //    borderStyle: 'solid',
+       height: bodyHeight * 0.25,
+       width: bodyWidth * 0.96,
+       borderColor: 'orange',
+       borderWidth: 2,
+       borderStyle: 'solid',
      },
+
      categoryFieldContainer: {
        height: categoryFieldContainerHeight,
        width: categoryFieldContainerWidth,
@@ -87,18 +91,19 @@ export const complexTaskScreenStyles = StyleSheet.create({
        fontSize: RFPercentage(3),
        fontFamily: 'Raleway-Medium',
        marginLeft: '4.6%',
-       color: 'white'
-    //    borderColor: 'orange',
-    //    borderWidth: 2,
-    //    borderStyle: 'solid',
+       color: 'white',
+       marginBottom: '1%',
+       borderColor: 'orange',
+       borderWidth: 2,
+       borderStyle: 'solid',
      },
 
      categoryBody: {
        height: categoryFieldContainerHeight * 0.8,
        width: categoryFieldContainerWidth,
-      //  borderColor: 'blue',
-      //  borderWidth: 2,
-      //  borderStyle: 'solid',
+       borderColor: 'blue',
+       borderWidth: 2,
+       borderStyle: 'solid',
        flexDirection: 'row',
        flexWrap: 'wrap',
        paddingTop: '2%',
@@ -106,13 +111,13 @@ export const complexTaskScreenStyles = StyleSheet.create({
 
      categoryBox: {
        height: categoryFieldContainerHeight * 0.8 * 0.35,
-       width: bodyWidth * 0.3,
-       borderColor: 'white',
+       width: bodyWidth * 0.31,
+       backgroundColor: '#455a64',
        borderWidth: 0.5,
        borderStyle: 'solid',
-       marginLeft: '2%',
+       marginLeft: '1.5%',
        marginBottom: '1.8%',
-       borderRadius: 10,
+       borderRadius: 15,
        justifyContent: 'center',
        alignItems: 'center',
      },
@@ -120,44 +125,100 @@ export const complexTaskScreenStyles = StyleSheet.create({
      categoryBoxTxt: {
        fontSize: RFPercentage(2.5),
        fontFamily: 'Raleway-Medium',
-       color: 'white'
+       color: 'white',
      },
 
      categoryBoxBtn: {
-        borderColor: '#f0c96d',
+        backgroundColor: '#f0c96d',
         borderWidth: 1.2,
      },
+
+     categoryBoxTxtEffect: {
+        color: 'black'
+     },
+
+     subTaskContainer: {
+       height: subTaskContainerHeight,
+       width: subTaskContainerWidth,
+       borderColor: 'blue',
+       borderWidth: 2,
+       borderStyle: 'solid',
+       alignItems: 'center'
+     },
+
+     subTaskHeader: {
+       flexDirection: 'row',
+       borderColor: 'gray',
+       borderWidth: 2,
+       borderStyle: 'solid',
+     },
+
+     subTaskHeaderTxt: {
+       fontSize: RFPercentage(3),
+       color: 'white',
+       borderColor: 'blue',
+       borderWidth: 2,
+       borderStyle: 'solid',
+     },
+
+     subTask: {
+       flexDirection: 'row',
+       height: subTaskContainerHeight * 0.3,
+       width: subTaskContainerWidth * 0.95,
+       borderColor: 'red',
+       borderWidth: 2,
+       borderStyle: 'solid',  
+       alignItems: 'center'
+     },
+
+     subTaskTxt: {
+      color: 'white'
+
+     }
+
+
 
 });
 
 
 export const containerStylesSettings = {
-       borderWidth: 1,
+       borderWidth: 0.5,
        borderColor: '#ccc',
        borderRadius: 8,
-    //    paddingHorizontal: 10,
        height: 60,
-       marginTop: 22,
+       alignSelf: 'center' as const
 }; 
 
 export const descriptionContainerStylesSettings = {
-       borderWidth: 1,
+       borderWidth: 0.5,
        borderColor: '#ccc',
        borderRadius: 8,
-    //    paddingHorizontal: 10,
-       height: 70,
-       marginTop: 22,
-       
+       height: 140, 
+       alignSelf: 'center' as const
 }; 
 
-export const customLabelStylesSettings = {
+
+export const customLabelStylesSettings1 = {
       colorFocused: '#fff', // font color of the label
       colorBlurred: '#fff',
       fontSizeFocused: RFPercentage(2.7), // fontsize of the label when it is floating
       fontSizeBlurred: RFPercentage(3), // fontsize of the label when it is inside the input
       fontFamilyFocused: 'Raleway-Regular',
       fontFamilyBlurred: 'Raleway-Regular',
-      topFocused: 0,
+      topBlurred: -15,
+      topFocused: -32,
+      leftFocused: 10,
+};
+
+export const customLabelStylesSettings2 = {
+      colorFocused: '#fff', // font color of the label
+      colorBlurred: '#fff',
+      fontSizeFocused: RFPercentage(2.7), // fontsize of the label when it is floating
+      fontSizeBlurred: RFPercentage(3), // fontsize of the label when it is inside the input
+      fontFamilyFocused: 'Raleway-Regular',
+      fontFamilyBlurred: 'Raleway-Regular',
+      topBlurred: -55,
+      topFocused: -70,
       leftFocused: 10,
 };
 
@@ -167,9 +228,9 @@ export const labelStylesSettings = {
 };
 
 export const inputStylesSettings = {
-        fontSize: RFPercentage(2.5), // fontsize of the input text
-        marginTop: 7,
-        paddingLeft: 15, 
+        fontSize: RFPercentage(2.3), // fontsize of the input text
+        paddingLeft: 15,
+        paddingRight: 15, 
         fontFamily: 'Raleway-Regular',
         color: 'white', // color of the input text
 };

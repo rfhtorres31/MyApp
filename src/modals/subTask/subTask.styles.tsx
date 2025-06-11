@@ -30,17 +30,26 @@ export const subTaskModalStyle = StyleSheet.create({
         flexDirection: 'row',
         height: bodyHeight * 0.3,
         width: bodyWidth,
+        marginBottom: '4%',
+        alignItems: 'center',
+        marginTop: '2%',
         // borderWidth: 2,
         // borderColor: 'red',
         // borderStyle: 'solid',      
     },
 
+    headerTxt: {
+      fontSize: RFPercentage(3),
+      fontFamily: 'Poppins-Regular',
+      color: 'white',
+      marginLeft: '35%',
+    }, 
+
     close: {
         // borderWidth: 2,
         // borderColor: 'red',
-        // borderStyle: 'solid', 
-        marginTop: '2%',    
-        marginLeft: '85%', 
+        // borderStyle: 'solid',    
+        marginLeft: '25%',      
     }, 
 
     body: {

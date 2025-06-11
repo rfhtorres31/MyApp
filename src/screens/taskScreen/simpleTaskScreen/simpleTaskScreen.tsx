@@ -201,8 +201,7 @@ const SimpleTaskScreen = ({navigation}:Props) => {
                               <Text style={simpleTaskScreenStyles.categoryBoxTxt}>{category}</Text>
                          </TouchableOpacity>
                       ))
-                     }
-                     
+                     }                   
                   </View>
                 </View>
                 <View style={simpleTaskScreenStyles.dateFieldContainer}>

@@ -228,14 +228,6 @@ export const simpleTaskScreenStyles = StyleSheet.create({
       justifyContent: 'center',
     }, 
 
-    
-
-
-
-  
-
-
-
 });
 
 

@@ -15,6 +15,9 @@ const categoryFieldContainerWidth = bodyWidth * 1;
 const subTaskContainerHeight = bodyHeight * 0.3;
 const subTaskContainerWidth = bodyWidth * 1;
 
+const dateContainerHeight = bodyHeight * 0.7;
+const dateContainerWidth = bodyWidth * 1;
+
 export const complexTaskScreenStyles = StyleSheet.create({
      
     taskContainer: {
@@ -26,9 +29,9 @@ export const complexTaskScreenStyles = StyleSheet.create({
        position: 'relative',
        height: headerContainerHeight,
        width: headerContainerWidth,
-       borderColor: 'red',
-       borderWidth: 2,
-       borderStyle: 'solid',
+      //  borderColor: 'red',
+      //  borderWidth: 2,
+      //  borderStyle: 'solid',
        flexDirection: 'row',
        alignItems: 'center',
        justifyContent: 'center',
@@ -37,16 +40,16 @@ export const complexTaskScreenStyles = StyleSheet.create({
      backBtn: {
        position: 'absolute',
        left: '2%',
-       borderColor: 'red',
-       borderWidth: 2,
-       borderStyle: 'solid',
+      //  borderColor: 'red',
+      //  borderWidth: 2,
+      //  borderStyle: 'solid',
      }, 
 
     headerTxt: {
        position: 'absolute', 
-       borderColor: 'red',
-       borderWidth: 2,
-       borderStyle: 'solid',
+      //  borderColor: 'red',
+      //  borderWidth: 2,
+      //  borderStyle: 'solid',
        fontSize: RFPercentage(3.3),
        fontFamily: 'Raleway-Regular',
        color: '#ffffff',
@@ -55,34 +58,34 @@ export const complexTaskScreenStyles = StyleSheet.create({
      bodyContainer: {
        height: bodyHeight,
        width: bodyWidth,
-       borderColor: 'blue',
-       borderWidth: 2,
-       borderStyle: 'solid',
+      //  borderColor: 'red',
+      //  borderWidth: 2,
+      //  borderStyle: 'solid',
        alignItems: 'center',
      },
 
     inputField: {
        height: bodyHeight * 0.13,
        width: bodyWidth * 0.96,
-       borderColor: 'orange',
-       borderWidth: 2,
-       borderStyle: 'solid',
+      //  borderColor: 'orange',
+      //  borderWidth: 2,
+      //  borderStyle: 'solid',
      },
 
     descriptionField: {
        height: bodyHeight * 0.25,
        width: bodyWidth * 0.96,
-       borderColor: 'orange',
-       borderWidth: 2,
-       borderStyle: 'solid',
+      //  borderColor: 'orange',
+      //  borderWidth: 2,
+      //  borderStyle: 'solid',
      },
 
      categoryFieldContainer: {
        height: categoryFieldContainerHeight,
        width: categoryFieldContainerWidth,
-       borderColor: 'orange',
-       borderWidth: 2,
-       borderStyle: 'solid',
+      //  borderColor: 'orange',
+      //  borderWidth: 2,
+      //  borderStyle: 'solid',
      },
 
      categoryHeader: {
@@ -93,17 +96,17 @@ export const complexTaskScreenStyles = StyleSheet.create({
        marginLeft: '4.6%',
        color: 'white',
        marginBottom: '1%',
-       borderColor: 'orange',
-       borderWidth: 2,
-       borderStyle: 'solid',
+      //  borderColor: 'orange',
+      //  borderWidth: 2,
+      //  borderStyle: 'solid',
      },
 
      categoryBody: {
        height: categoryFieldContainerHeight * 0.8,
        width: categoryFieldContainerWidth,
-       borderColor: 'blue',
-       borderWidth: 2,
-       borderStyle: 'solid',
+      //  borderColor: 'blue',
+      //  borderWidth: 2,
+      //  borderStyle: 'solid',
        flexDirection: 'row',
        flexWrap: 'wrap',
        paddingTop: '2%',
@@ -140,41 +143,99 @@ export const complexTaskScreenStyles = StyleSheet.create({
      subTaskContainer: {
        height: subTaskContainerHeight,
        width: subTaskContainerWidth,
-       borderColor: 'blue',
-       borderWidth: 2,
-       borderStyle: 'solid',
+      //  borderColor: 'red',
+      //  borderWidth: 2,
+      //  borderStyle: 'solid',
        alignItems: 'center'
      },
 
      subTaskHeader: {
        flexDirection: 'row',
-       borderColor: 'gray',
-       borderWidth: 2,
-       borderStyle: 'solid',
+      //  borderColor: 'gray',
+      //  borderWidth: 2,
+      //  borderStyle: 'solid',
      },
 
      subTaskHeaderTxt: {
        fontSize: RFPercentage(3),
        color: 'white',
-       borderColor: 'blue',
-       borderWidth: 2,
-       borderStyle: 'solid',
+      //  borderColor: 'blue',
+      //  borderWidth: 2,
+      //  borderStyle: 'solid',
      },
 
      subTask: {
+       position: 'relative',
        flexDirection: 'row',
-       height: subTaskContainerHeight * 0.3,
+       justifyContent: 'space-between',
        width: subTaskContainerWidth * 0.95,
-       borderColor: 'red',
-       borderWidth: 2,
-       borderStyle: 'solid',  
-       alignItems: 'center'
+      //  borderColor: 'red',
+      //  borderWidth: 2,
+      //  borderStyle: 'solid', 
+       backgroundColor: '#455a64', 
+       alignItems: 'center',
+       padding: '5%',
+       marginTop: '2%',
+     },
+
+     trashBtn: {
+       position: 'absolute',
+       marginLeft: '95%',
      },
 
      subTaskTxt: {
-      color: 'white'
+      color: 'white',
+      width: subTaskContainerWidth * 0.7,
+      fontSize: RFPercentage(2.7),
+      fontFamily: 'Raleway-Medium',    
+      borderColor: '#455a64',
+      borderWidth: 2,
+      borderStyle: 'solid',  
+     },
 
-     }
+     dateContainer: {
+       width: dateContainerWidth,
+       height: dateContainerHeight,
+      //  borderColor: 'orange',
+      //  borderWidth: 2,
+      //  borderStyle: 'solid',  
+     }, 
+
+     startDate: {
+       width: dateContainerHeight * 0.6,
+       marginTop: '4%',
+       flexDirection: 'row',
+       alignItems: 'center',
+      //  borderColor: 'red',
+      //  borderWidth: 1,
+      //  borderStyle: 'solid',
+       marginLeft: '5%'
+     }, 
+     
+     dateTimeHeader: {
+        textAlign: 'center',
+        fontFamily: 'Raleway-Medium',
+        fontSize: RFPercentage(3),
+        color: 'white',
+     }, 
+     
+      dateTimeContent: {
+         flex: 1,
+         borderColor: '#4a4a4a',
+         borderWidth: 0.5,
+         borderStyle: 'solid',
+         justifyContent: 'center',
+         alignItems: 'center',
+        backgroundColor: '#455a64',
+      },
+     
+       dateTimeContentTxt: {
+          fontSize: RFPercentage(2.4),
+          fontFamily: 'Raleway-Regular',
+          textAlign: 'center',
+          color: '#f0c96d',
+          padding: '3%',
+       },
 
 
 

@@ -4,14 +4,19 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../../../navigation/screenNavigation';
 import { FloatingLabelInput } from 'react-native-floating-label-input';
-import {complexTaskScreenStyles, descriptionContainerStylesSettings, containerStylesSettings, customLabelStylesSettings2, customLabelStylesSettings1, labelStylesSettings, inputStylesSettings} from './complexTaskScreen.styles';
+import {complexTaskScreenStyles, descriptionContainerStylesSettings, containerStylesSettings, customLabelStylesSettings2, customLabelStylesSettings1, labelStylesSettings, inputStylesSettings} from './addTaskScreen.styles';
 import AddSubTaskModal from '../../../modals/subTask/subTask';
 import { subTaskModalStyle } from '../../../modals/subTask/subTask.styles';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import Toast from 'react-native-toast-message';
+import { verifyToken } from '../../../utils/authUtils';
+import { Alert } from 'react-native';
+import {BACKEND_URL, BACKEND_URL_2} from '@env';
+import {getGenericPassword } from 'react-native-keychain';
 
-type ComplexTaskScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'ComplexTask'>;
+type AddTaskScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'AddTask'>;
 type Props = {
-    navigation:ComplexTaskScreenNavigationProp,
+    navigation:AddTaskScreenNavigationProp,
 };
 
 type TaskData = {
@@ -19,18 +24,16 @@ type TaskData = {
    description: string,
    category: string,
    subTask: string[],
-   fromDate: string,
    toDate: string,
 };
 
-const ComplexTaskScreen = ({navigation}:Props) => {
+const AddTaskScreen = ({navigation}:Props) => {
 
     const [taskData, setTaskData] = useState<TaskData>({
            title: '',
            description: '',
            category: '',
            subTask: [],
-           fromDate: '',
            toDate: '',
     }); 
 
@@ -101,11 +104,79 @@ const ComplexTaskScreen = ({navigation}:Props) => {
           setStartDate(selectedDate); 
           setTaskData(prev=>({
           ...prev, 
-          fromDate: selectedDate.toLocaleString('en-US', 
+          toDate: selectedDate.toLocaleString('en-US', 
             { year: 'numeric', month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: true, timeZone: userTimeZone}),
           }));  
           hideStartDatePicker();
      };
+
+    const handleSubmit = async () => {
+      
+         try {
+           
+           console.log(taskData);
+           const isTaskDataEmpty = Object.values(taskData).some(value=>value === '');
+           console.log(isTaskDataEmpty);
+  
+           if (isTaskDataEmpty) {
+              Alert.alert('Missing Information', 'Fill in all the required fields');
+              return;
+           }
+  
+           const credentials = await getGenericPassword();
+           
+           if (!credentials) {
+              throw new Error("No credentials found for token");
+           }
+  
+           const authToken = credentials.password;
+           const isTokenValid = await verifyToken(authToken);
+  
+           if (!isTokenValid) {
+              navigation.navigate('Home');
+              return; // Stop further execution
+           }
+  
+           const response = await fetch(`${BACKEND_URL}/api/add-task`, {
+                       method : 'POST',
+                       headers: {
+                           'Authorization': `Bearer ${authToken}`, 
+                           'Content-Type': 'application/json',
+                       },
+                       body: JSON.stringify(taskData)
+           });
+          
+         const parsedResponse = await response.json();
+  
+         if (!response.ok) {
+            Alert.alert('Server Unavailable', 'Please try again later');
+            const responsObj = await response.json();
+            console.log(responsObj);
+            return; 
+         }
+         
+         Toast.show({
+           type: 'success',
+           text1: 'Task created!',
+           text2: 'Your task was added successfully.',
+           visibilityTime: 3000, 
+           onHide: () =>  {
+              setTimeout(()=>{
+                navigation.reset({
+                    index: 0,
+                    routes: [{name: 'Profile'}], 
+               })
+              }, 1000);
+           }
+           });
+           
+  
+  
+         }
+         catch (err) {
+           console.error(err);
+         }
+      };
 
   return (
     <SafeAreaView style={complexTaskScreenStyles.taskContainer}>
@@ -113,7 +184,10 @@ const ComplexTaskScreen = ({navigation}:Props) => {
           <TouchableOpacity style={complexTaskScreenStyles.backBtn} onPress={handleBack}>
             <Ionicons name="arrow-back-outline" size={30} color="#ffffff" />
           </TouchableOpacity>
-          <Text style={complexTaskScreenStyles.headerTxt}>Task Details</Text>            
+          <Text style={complexTaskScreenStyles.headerTxt}>Task Details</Text>    
+          <TouchableOpacity style={complexTaskScreenStyles.checkBtn} onPress={handleSubmit}>
+            <Ionicons name="checkmark" size={30} color="#ffffff" />
+          </TouchableOpacity>        
       </View>
       <View style={complexTaskScreenStyles.bodyContainer}>
           <View style={complexTaskScreenStyles.inputField}>
@@ -177,4 +251,4 @@ const ComplexTaskScreen = ({navigation}:Props) => {
 };
 
 
-export default ComplexTaskScreen;
+export default AddTaskScreen;

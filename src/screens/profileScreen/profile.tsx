@@ -10,7 +10,6 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RouteProp } from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Shadow } from 'react-native-shadow-2';
-import AddTaskTypeModal from '../../modals/addTask';
 import SearchTaskModal from '../../modals/searchTask';
 import Loader from '../../utils/loader/loader';
 import {getGenericPassword} from 'react-native-keychain';
@@ -161,7 +160,7 @@ const ProfileScreen = ({navigation, route}:Props) => {
             <View style={{ flex: 1 }}>           
             <View style={profileStyles.headerContainer1}>
                <TouchableOpacity style={profileStyles.userSettingsBtn} onPress={()=>handleLogout()}>
-                  <Ionicons name="log-out-outline" size={23} color="#000" />
+                  <Ionicons name="log-out-outline" size={30} color="#fff" />
                </TouchableOpacity>             
             </View>
             <View style={profileStyles.headerContainer2}>
@@ -263,10 +262,12 @@ const ProfileScreen = ({navigation, route}:Props) => {
               </ScrollView>
            </View>
            <View style={profileStyles.TestContainer}>
-              
+             <TouchableOpacity onPress={()=>navigation.navigate('AddTask')}>
+               <Ionicons name="add-circle-outline" size={45} color="#fff"/>
+             </TouchableOpacity>           
            </View>
            <SearchTaskModal  visible={searchTaskModalVisible} onClose={()=>setSearchTaskModalVisible(false)}/>                                                      
-           <AddTaskTypeModal visible={createTaskModalVisible} onNavigateSimple={()=>navigation.navigate('SimpleTask')} onNavigateComplex={()=>navigation.navigate('ComplexTask')} onClose={()=>setCreateTaskModalVisible(false)} />
+           {/* <AddTaskTypeModal visible={createTaskModalVisible} onNavigateSimple={()=>navigation.navigate('SimpleTask')} onNavigateComplex={()=>navigation.navigate('ComplexTask')} onClose={()=>setCreateTaskModalVisible(false)} /> */}
            <Loader visible={loaderVisible} />
            </View>
            </TouchableWithoutFeedback>

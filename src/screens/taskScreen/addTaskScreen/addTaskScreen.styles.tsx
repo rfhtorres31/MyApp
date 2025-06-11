@@ -45,6 +45,14 @@ export const complexTaskScreenStyles = StyleSheet.create({
       //  borderStyle: 'solid',
      }, 
 
+     checkBtn: {
+       position: 'absolute',
+       left: '90%',
+      //  borderColor: 'red',
+      //  borderWidth: 2,
+      //  borderStyle: 'solid',
+    }, 
+
     headerTxt: {
        position: 'absolute', 
       //  borderColor: 'red',
@@ -120,7 +128,6 @@ export const complexTaskScreenStyles = StyleSheet.create({
        borderStyle: 'solid',
        marginLeft: '1.5%',
        marginBottom: '1.8%',
-       borderRadius: 15,
        justifyContent: 'center',
        alignItems: 'center',
      },

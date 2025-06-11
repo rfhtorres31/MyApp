@@ -41,7 +41,7 @@ export const profileStyles = StyleSheet.create ({
       userSettingsBtn: {
          padding: '1%',
          position: 'absolute',
-         left: headerContainerWidth_1*0.85,
+         left: headerContainerWidth_1*0.87,
         //  borderColor: 'black',
         //  borderWidth: 0.2,
         //  borderStyle: 'solid',

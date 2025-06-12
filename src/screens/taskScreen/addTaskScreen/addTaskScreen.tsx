@@ -116,9 +116,8 @@ const AddTaskScreen = ({navigation}:Props) => {
            
            console.log(taskData);
            const isTaskDataEmpty = Object.values(taskData).some(value=>value === '');
-           console.log(isTaskDataEmpty);
-  
-           if (isTaskDataEmpty) {
+
+           if (isTaskDataEmpty || taskData.subTask.length === 0) {
               Alert.alert('Missing Information', 'Fill in all the required fields');
               return;
            }

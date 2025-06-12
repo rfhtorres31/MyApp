@@ -213,6 +213,8 @@ export const profileStyles = StyleSheet.create ({
           // borderStyle: 'solid',
           marginTop: '2.5%',
           borderRadius: 15,
+          flexDirection: 'row',
+          alignItems: 'center',
       },
 
       title: {
@@ -263,8 +265,8 @@ export const profileStyles = StyleSheet.create ({
         // height: searchBarContainerHeight,
         // width: searchBarContainerWidth,
         flex: 1,
-        justifyContent: 'center',
         alignItems: 'center',
+        justifyContent: 'center',
         borderColor: 'blue',
         borderWidth: 2,
         borderStyle: 'solid',         

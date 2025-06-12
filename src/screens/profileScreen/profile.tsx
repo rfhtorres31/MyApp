@@ -33,6 +33,7 @@ type payloadFormat = {
 };
 
 type taskObjFormat = {
+   id: string,
    title: string,
    description: string,
    from_date: string,
@@ -48,6 +49,7 @@ const ProfileScreen = ({navigation, route}:Props) => {
       const [loaderVisible, setLoaderVisible] = useState(false);
       const [onGoingTask, setOnGoingTask] = useState<taskObjFormat[]>([]);
       const [completedTask, setCompletedTask] = useState<taskObjFormat[]>([]);
+
       const username = route?.params?.username ?? "test";
       const dateNow = new Date();
 
@@ -79,13 +81,13 @@ const ProfileScreen = ({navigation, route}:Props) => {
 
                     if (!isTokenValid) {
                         navigation.navigate('Home');
+                        return;
                     }
 
                     const payload = jwtDecode<payloadFormat>(token);
 
                     userID = payload?.id;
                     
-
 
                     // get ongoing tasks
                     const response = await fetch(`${BACKEND_URL}/api/get-task?userID=${userID}`, {
@@ -96,13 +98,15 @@ const ProfileScreen = ({navigation, route}:Props) => {
                     });
 
                     const parsedObj = await response.json();
-
+                    console.log(parsedObj);
                     // hide the loader 
                     if (parsedObj) {
-                       const taskObj: taskObjFormat[] = parsedObj?.content;
-                       console.log(taskObj);
+
+                       const taskObj: taskObjFormat[] = parsedObj?.content?.tasks;
                        const onGoingTask: taskObjFormat[] = taskObj.filter(task => task.isCompleted === false);
-                       const completedTask: taskObjFormat[] = taskObj.filter(task => task.isCompleted === true);   
+                       const completedTask: taskObjFormat[] = taskObj.filter(task => task.isCompleted === true);  
+                       console.log(onGoingTask);
+                       console.log(completedTask);
                        const formattedOnGoingTask = onGoingTask.map(task => {
                              const formatDate = (dateStr: string) => {
                                     const date = new Date(dateStr);
@@ -120,13 +124,17 @@ const ProfileScreen = ({navigation, route}:Props) => {
 
                        setCompletedTask(completedTask);
                        setOnGoingTask(formattedOnGoingTask);
-                       setLoaderVisible(false); // Hide the loader
+                       
                     }
                 }
                 catch (err) {
                   console.error(err);
                   navigation.navigate('Home');
-                }            
+                } 
+                finally {
+                  // Hide the loader
+                  setLoaderVisible(false); 
+                }         
             
            }; 
 
@@ -152,6 +160,59 @@ const ProfileScreen = ({navigation, route}:Props) => {
            }
       }; 
 
+      const handleTaskDelete = async (taskID: string) => {
+
+            try { 
+                  // Display loader
+                  setLoaderVisible(true);
+                  
+                  const credentials = await getGenericPassword();
+
+                  if (!credentials) {
+                       navigation.navigate('Home'); 
+                       return; 
+                  }
+
+                  const token = credentials.password;
+
+                  if (!token){
+                       navigation.navigate('Home'); 
+                       return; 
+                  }
+
+                  const isTokenValid = await verifyToken(token);
+
+                  if (!isTokenValid) {
+                        navigation.navigate('Home');
+                        return;
+                  }
+
+                  const payload = jwtDecode<payloadFormat>(token);
+
+                  const userID = payload?.id;
+
+                  const responseObj = await fetch(`${BACKEND_URL}/api/delete-task?taskID=${taskID}&userID=${userID}`, {
+                          method: 'DELETE', 
+                          headers: {
+                            'Content-Type': 'application/json',
+                          }
+                  }); 
+
+                  const parsedResponse = await responseObj.json();
+
+                  if (parsedResponse && responseObj.ok) {
+                      // Update the onGoingTask array state
+                      setOnGoingTask(prev=>prev.filter(task=>task.id !== taskID)); 
+                  }        
+            }
+            catch (err) {
+                  console.error(err);
+            }
+            finally {
+                 setLoaderVisible(false);
+            }
+      };
+
 
       return (
          <SafeAreaView style={profileStyles.profileContainer}>
@@ -170,72 +231,21 @@ const ProfileScreen = ({navigation, route}:Props) => {
            <View style={profileStyles.carouselContainer}>
            <Text style={profileStyles.carouselHeader}>Completed Tasks</Text>
            <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={profileStyles.carouselBody} contentContainerStyle={{flexDirection:'row', paddingRight: '3%', paddingTop: '3%', paddingBottom: '3%'}}>               
-              <Shadow {...shadowSettings}>
-                <LinearGradient colors={['#455a64', '#455a64']} style={profileStyles.featureContainer}>
-                  <TouchableOpacity style={profileStyles.featureBtn} onPress={()=>setCreateTaskModalVisible(true)}>
-                     <View style={profileStyles.featureHeader}>
-                        <Ionicons name="person-circle-outline" size={24} color="#fff"/>
-                        <Text style={profileStyles.featureTitle}>Personal</Text>
-                     </View>
-                     <Text style={profileStyles.featureDesc}>Personal goals, self care, habits</Text>
-                  </TouchableOpacity>
-                </LinearGradient>
-              </Shadow>
-              <Shadow {...shadowSettings}>
-                <LinearGradient colors={['#eafcff', '#b3eaff']} style={profileStyles.featureContainer}>
-                  <TouchableOpacity style={profileStyles.featureBtn} onPress={()=>setCreateTaskModalVisible(true)}>
-                     <View style={profileStyles.featureHeader}>
-                        <Ionicons name="briefcase-outline" size={24} color="#000"/>
-                        <Text style={profileStyles.featureTitle}>Work</Text>
-                     </View>
-                     <Text style={profileStyles.featureDesc}>Office Tasks, meetings, deadlines</Text>
-                  </TouchableOpacity>
-                </LinearGradient>
-              </Shadow>
-              <Shadow {...shadowSettings}>
-                <LinearGradient colors={['#eafcff', '#b3eaff']} style={profileStyles.featureContainer}>
-                  <TouchableOpacity style={profileStyles.featureBtn} onPress={()=>setCreateTaskModalVisible(true)}>
-                     <View style={profileStyles.featureHeader}>
-                        <Ionicons name="home-outline" size={24} color="#000"/>
-                        <Text style={profileStyles.featureTitle}>Home</Text>
-                     </View>
-                     <Text style={profileStyles.featureDesc}>House Chores, maintenance</Text>
-                  </TouchableOpacity>
-                </LinearGradient>
-              </Shadow>
-              <Shadow {...shadowSettings}>
-                <LinearGradient colors={['#eafcff', '#b3eaff']} style={profileStyles.featureContainer}>
-                  <TouchableOpacity style={profileStyles.featureBtn} onPress={()=>setCreateTaskModalVisible(true)}>
-                     <View style={profileStyles.featureHeader}>
-                        <Ionicons name="medkit-outline" size={24} color="#000"/>
-                        <Text style={profileStyles.featureTitle}>Health</Text>
-                     </View>
-                     <Text style={profileStyles.featureDesc}>Doctor visits, meds, workouts</Text>
-                  </TouchableOpacity>
-                </LinearGradient>
-              </Shadow>
-              <Shadow {...shadowSettings}>
-                <LinearGradient colors={['#eafcff', '#b3eaff']} style={profileStyles.featureContainer}>
-                  <TouchableOpacity style={profileStyles.featureBtn} onPress={()=>setCreateTaskModalVisible(true)}>
-                     <View style={profileStyles.featureHeader}>
-                        <Ionicons name="card-outline" size={24} color="#000"/>
-                        <Text style={profileStyles.featureTitle}>Bills</Text>
-                     </View>
-                     <Text style={profileStyles.featureDesc}>Bill payments, rent, subscriptions</Text>
-                  </TouchableOpacity>
-                </LinearGradient>
-              </Shadow>
-              <Shadow {...shadowSettings}>
-                <LinearGradient colors={['#eafcff', '#b3eaff']} style={profileStyles.featureContainer}>
-                  <TouchableOpacity style={profileStyles.featureBtn} onPress={()=>setCreateTaskModalVisible(true)}>
-                     <View style={profileStyles.featureHeader}>
-                        <Ionicons name="cart-outline" size={24} color="#000"/>
-                        <Text style={profileStyles.featureTitle}>Shopping</Text>
-                     </View>
-                     <Text style={profileStyles.featureDesc}>Groceries, wishlists</Text>
-                  </TouchableOpacity>
-                </LinearGradient>
-              </Shadow>
+             {
+                completedTask.map(task=>(
+                 <Shadow {...shadowSettings}>
+                     <LinearGradient colors={['#455a64', '#455a64']} style={profileStyles.featureContainer}>
+                       <TouchableOpacity style={profileStyles.featureBtn} onPress={()=>setCreateTaskModalVisible(true)}>
+                          <View style={profileStyles.featureHeader}>
+                            <Ionicons name="person-circle-outline" size={24} color="#fff"/>
+                            <Text style={profileStyles.featureTitle}>{task.category}</Text>
+                          </View>
+                         <Text style={profileStyles.featureDesc}>{task.title}</Text>
+                       </TouchableOpacity>
+                     </LinearGradient>
+                  </Shadow>
+                ))
+             }
            </ScrollView>
            </View>
            <View style={profileStyles.mainContainer}>
@@ -255,15 +265,17 @@ const ProfileScreen = ({navigation, route}:Props) => {
                            <Text style={profileStyles.category}>{task.category}</Text>
                            <Text style={profileStyles.dueDate}>Due on: {task.due_date}</Text>
                         </TouchableOpacity>
+                        <TouchableOpacity onPress={()=>handleTaskDelete(task.id)}>
+                           <Ionicons name="trash" size={30} color="#f0c96d" />
+                        </TouchableOpacity>
                       </LinearGradient>
                   ))
-
                }
               </ScrollView>
            </View>
            <View style={profileStyles.TestContainer}>
              <TouchableOpacity onPress={()=>navigation.navigate('AddTask')}>
-               <Ionicons name="add-circle-outline" size={45} color="#fff"/>
+               <Ionicons name="add-circle-outline" size={50} color="#455a64"/>
              </TouchableOpacity>           
            </View>
            <SearchTaskModal  visible={searchTaskModalVisible} onClose={()=>setSearchTaskModalVisible(false)}/>                                                      

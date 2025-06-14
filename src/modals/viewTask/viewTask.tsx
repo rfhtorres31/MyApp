@@ -1,6 +1,7 @@
 import React, {useState, useEffect, useRef} from 'react';
 import {View, Text, TextInput, Modal, TouchableOpacity, Animated, Dimensions, Pressable, Easing} from 'react-native';
-import searchModalstyle from './searchTaskStyles';
+import viewTaskModalStyle from './viewTask.styles';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 
 const {height} = Dimensions.get('window');
@@ -10,9 +11,7 @@ type searchBarModalProps = {
    onClose: () => void, 
 };
 
-
-
-const SearchTaskModal = ({visible, onClose}: searchBarModalProps) => {
+const ViewTaskModal = ({visible, onClose}: searchBarModalProps) => {
      
     const slideAnim = useRef(new Animated.Value(height)).current; 
 
@@ -42,9 +41,8 @@ const SearchTaskModal = ({visible, onClose}: searchBarModalProps) => {
     
     return (
       <Modal transparent={true} visible={visible} animationType="none">
-        <Pressable style={searchModalstyle.overlay} onPress={onClose}>
-
-          <Animated.View style={[searchModalstyle.modalContainer, {transform:[{translateY:slideAnim}]}]}>
+        <Pressable style={viewTaskModalStyle.overlay} onPress={onClose}>
+          <Animated.View style={[viewTaskModalStyle.modalContainer, {transform:[{translateY:slideAnim}]}]}>
                  
           </Animated.View>
         </Pressable>
@@ -59,4 +57,4 @@ const SearchTaskModal = ({visible, onClose}: searchBarModalProps) => {
 
 
 
-export default SearchTaskModal; 
+export default ViewTaskModal; 

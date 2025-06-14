@@ -10,7 +10,8 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RouteProp } from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Shadow } from 'react-native-shadow-2';
-import SearchTaskModal from '../../modals/searchTask';
+import SearchTaskModal from '../../modals/searchTask/searchTask';
+import ViewTaskModal from '../../modals/viewTask/viewTask';
 import Loader from '../../utils/loader/loader';
 import {getGenericPassword} from 'react-native-keychain';
 import { BACKEND_URL, BACKEND_URL_2 } from '@env';
@@ -46,6 +47,7 @@ const ProfileScreen = ({navigation, route}:Props) => {
        
       const [createTaskModalVisible, setCreateTaskModalVisible] = useState(false);
       const [searchTaskModalVisible, setSearchTaskModalVisible] = useState(false);
+      const [viewTaskModalVisible, setViewTaskModalVisible] = useState(false);
       const [loaderVisible, setLoaderVisible] = useState(false);
       const [onGoingTask, setOnGoingTask] = useState<taskObjFormat[]>([]);
       const [completedTask, setCompletedTask] = useState<taskObjFormat[]>([]);
@@ -243,7 +245,7 @@ const ProfileScreen = ({navigation, route}:Props) => {
                          <Text style={profileStyles.featureDesc}>{task.title}</Text>
                        </TouchableOpacity>
                      </LinearGradient>
-                  </Shadow>
+                </Shadow>
                 ))
              }
            </ScrollView>
@@ -260,7 +262,7 @@ const ProfileScreen = ({navigation, route}:Props) => {
                {
                   onGoingTask.map(task => (
                       <LinearGradient colors={['#455a64', '#455a64']} style={profileStyles.task}>
-                        <TouchableOpacity style={[{flex: 1}]}>
+                        <TouchableOpacity style={[{flex: 1}]} onPress={()=>setViewTaskModalVisible(true)}>
                            <Text style={profileStyles.title}>{task.title}</Text>
                            <Text style={profileStyles.category}>{task.category}</Text>
                            <Text style={profileStyles.dueDate}>Due on: {task.due_date}</Text>
@@ -278,6 +280,7 @@ const ProfileScreen = ({navigation, route}:Props) => {
                <Ionicons name="add-circle-outline" size={50} color="#455a64"/>
              </TouchableOpacity>           
            </View>
+           <ViewTaskModal visible={viewTaskModalVisible} onClose={()=>setViewTaskModalVisible(false)}/>
            <SearchTaskModal  visible={searchTaskModalVisible} onClose={()=>setSearchTaskModalVisible(false)}/>                                                      
            <Loader visible={loaderVisible} />
            </View>

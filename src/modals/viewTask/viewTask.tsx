@@ -2,6 +2,7 @@ import React, {useState, useEffect, useRef} from 'react';
 import {View, Text, TextInput, Modal, TouchableOpacity, Animated, Dimensions, Pressable, Easing} from 'react-native';
 import viewTaskModalStyle from './viewTask.styles';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { RFPercentage } from 'react-native-responsive-fontsize';
 
 
 const {height} = Dimensions.get('window');
@@ -43,7 +44,27 @@ const ViewTaskModal = ({visible, onClose}: searchBarModalProps) => {
       <Modal transparent={true} visible={visible} animationType="none">
         <Pressable style={viewTaskModalStyle.overlay} onPress={onClose}>
           <Animated.View style={[viewTaskModalStyle.modalContainer, {transform:[{translateY:slideAnim}]}]}>
-                 
+            <Text style={viewTaskModalStyle.title}>Insert Title here</Text>
+            <View style={viewTaskModalStyle.details}>
+              <View style={viewTaskModalStyle.calendar}>
+                 <View style={viewTaskModalStyle.calendarIcn}>
+                    <Ionicons name="calendar-outline" size={24} color="#000" />
+                 </View>
+                 <View style={viewTaskModalStyle.calendarDetails}>
+                    <Text style={[{color: '#b3eaff', fontSize: RFPercentage(2.1), fontFamily: 'Poppins-Medium', padding:0,}]}>Due Date</Text>
+                    <Text style={[{color: 'white', fontSize: RFPercentage(2.7), fontFamily: 'Poppins-Medium', marginTop: '-6%'}]}>20 June</Text>
+                 </View>
+              </View>
+              <View style={viewTaskModalStyle.category}>
+                 <View style={viewTaskModalStyle.calendarIcn}>
+                    <Ionicons name="grid" size={24} color="#000" />
+                 </View>
+                 <View style={viewTaskModalStyle.calendarDetails}>
+                    <Text style={[{color: '#b3eaff', fontSize: RFPercentage(2.1), fontFamily: 'Poppins-Medium', padding:0,}]}>Category</Text>
+                    <Text style={[{color: 'white', fontSize: RFPercentage(2.7), fontFamily: 'Poppins-Medium', marginTop: '-6%'}]}>Personal</Text>
+                 </View>    
+              </View>
+            </View>
           </Animated.View>
         </Pressable>
       </Modal>

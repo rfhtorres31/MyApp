@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {ScrollView, View, Text, TouchableOpacity, TextInput, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import {ScrollView, RefreshControl, View, Text, TouchableOpacity, TextInput, KeyboardAvoidingView, Platform, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {profileStyles, shadowSettings} from './profile.styles';
 import { getDayName, getMonthName } from '../../utils/dateUtils';
@@ -16,6 +16,7 @@ import Loader from '../../utils/loader/loader';
 import {getGenericPassword} from 'react-native-keychain';
 import { BACKEND_URL, BACKEND_URL_2 } from '@env';
 import { jwtDecode } from 'jwt-decode';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type ProfilScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Profile'>; // This tells the app that hey, im in the Home route and i want to know what other routes I can go into
 type ProfileScreenRouteProp = RouteProp<RootStackParamList, 'Profile'>;
@@ -37,7 +38,6 @@ type taskObjFormat = {
    id: string,
    title: string,
    description: string,
-   from_date: string,
    due_date: string,
    category: string,
    isCompleted: boolean,
@@ -51,20 +51,15 @@ const ProfileScreen = ({navigation, route}:Props) => {
       const [loaderVisible, setLoaderVisible] = useState(false);
       const [onGoingTask, setOnGoingTask] = useState<taskObjFormat[]>([]);
       const [completedTask, setCompletedTask] = useState<taskObjFormat[]>([]);
+      const [reloadScreen, setReloadScreen] = useState(false);
 
       const username = route?.params?.username ?? "test";
       const dateNow = new Date();
 
       useEffect(()=>{
-            
-           let userID = "";
-           const tokenVerification = async () => {
+           const init = async () => {
 
                 try {
-
-                    // display the loader
-                    setLoaderVisible(true);
-
                     const credentials = await getGenericPassword();
 
                     if (!credentials) {
@@ -85,68 +80,118 @@ const ProfileScreen = ({navigation, route}:Props) => {
                         navigation.navigate('Home');
                         return;
                     }
-
-                    const payload = jwtDecode<payloadFormat>(token);
-
-                    userID = payload?.id;
                     
+                    // Check if there is cached, if there is, load the displayed tasks from the cached data
+                    // If there is no cached, fetch the tasks to the backend server
+                    const cached = await AsyncStorage.getItem("userTasks");
 
-                    // get ongoing tasks
-                    const response = await fetch(`${BACKEND_URL}/api/get-task?userID=${userID}`, {
-                          method: 'GET', 
-                          headers: {
-                            'Content-Type': 'application/json',
-                          }
-                    });
-
-                    const parsedObj = await response.json();
-                    console.log(parsedObj);
-                    // hide the loader 
-                    if (parsedObj) {
-
-                       const taskObj: taskObjFormat[] = parsedObj?.content?.tasks;
-                       const onGoingTask: taskObjFormat[] = taskObj.filter(task => task.isCompleted === false);
-                       const completedTask: taskObjFormat[] = taskObj.filter(task => task.isCompleted === true);  
-                       console.log(onGoingTask);
-                       console.log(completedTask);
-                       const formattedOnGoingTask = onGoingTask.map(task => {
-                             const formatDate = (dateStr: string) => {
-                                    const date = new Date(dateStr);
-                                    const day = String(date.getUTCDate()).padStart(2, '0');
-                                    const month = String(date.getUTCMonth() + 1).padStart(2, '0');
-                                    return `${day}/${month}`;
-                             }; 
-
-                             return {
-                                ... task,
-                                from_date: formatDate(task.from_date),
-                                due_date: formatDate(task.due_date)
-                             }
-                       });
-
-                       setCompletedTask(completedTask);
-                       setOnGoingTask(formattedOnGoingTask);
-                       
+                    if (cached) {
+                       await loadFromCachedData();
                     }
+                    else {
+                      await fetchTask();
+                    }
+
                 }
                 catch (err) {
                   console.error(err);
                   navigation.navigate('Home');
-                } 
-                finally {
-                  // Hide the loader
-                  setLoaderVisible(false); 
-                }         
-            
+                }          
            }; 
 
-           tokenVerification(); 
+           init(); 
       }, []);
     
       const day = getDayName(dateNow.getDay());
       const month = getMonthName(dateNow.getMonth()); // in javascript .getMonth() function is a zero based, meaning, January starts at index = 0
       const date = dateNow.getDate();
       const dateHeader = `${day}, ${month} ${date}`;
+
+
+      const fetchTask = async () => {
+
+         try {
+
+            setLoaderVisible(true);
+            const credentials = await getGenericPassword();
+
+            if (!credentials) {
+                navigation.navigate('Home'); 
+                return; 
+            }
+
+            const token = credentials.password;
+            const payload = jwtDecode<payloadFormat>(token);
+            
+            let userID = payload?.id; 
+                    
+            const response = await fetch(`${BACKEND_URL}/api/get-task?userID=${userID}`, {
+                  method: 'GET', 
+                  headers: {'Content-Type': 'application/json',}
+            });
+
+            const parsedObj = await response.json();
+            console.log("parsedObj", parsedObj);
+            
+            if (parsedObj) {
+
+                const taskObj: taskObjFormat[] = parsedObj?.content?.tasks;
+                const onGoingTask: taskObjFormat[] = taskObj.filter(task => task.isCompleted === false);
+                const completedTask: taskObjFormat[] = taskObj.filter(task => task.isCompleted === true);  
+                     
+                const formattedOnGoingTask = onGoingTask.map(task => {
+                        const formatDate = (dateStr: string) => {
+                                    const date = new Date(dateStr);
+                                    const day = String(date.getUTCDate()).padStart(2, '0');
+                                    const month = String(date.getUTCMonth() + 1).padStart(2, '0');
+                                    return `${day}/${month}`;
+                        }; 
+
+                        return {
+                                ... task,
+                                due_date: formatDate(task.due_date)
+                        }
+                });
+               
+               const cachedData = {
+                     tasks: {
+                        onGoingTask: formattedOnGoingTask,
+                        completedTask: completedTask,
+                     }
+               };
+
+               await AsyncStorage.setItem('userTasks', JSON.stringify(cachedData));  
+            }
+         }
+         catch (err) {
+           console.error(err);
+         }
+         finally {
+            setLoaderVisible(false); 
+         }
+      };
+      
+      const loadFromCachedData = async () => {
+
+         try {
+             const tasks = await AsyncStorage.getItem('userTasks');
+
+             if (tasks) {
+                const parsedTasks = JSON.parse(tasks);
+                const completedTask = parsedTasks?.tasks?.completedTask ?? [];
+                const  formattedOnGoingTask = parsedTasks?.tasks?.onGoingTask ?? [];
+                console.log(completedTask);
+                console.log(formattedOnGoingTask);
+                setCompletedTask(completedTask);
+                setOnGoingTask(formattedOnGoingTask);  
+             }      
+
+         }
+         catch (err) {
+           console.error(err);
+         }
+             
+      };
 
       const handleLogout = async () => {
            
@@ -166,8 +211,7 @@ const ProfileScreen = ({navigation, route}:Props) => {
 
             try { 
                   // Display loader
-                  setLoaderVisible(true);
-                  
+                  setLoaderVisible(true);                
                   const credentials = await getGenericPassword();
 
                   if (!credentials) {
@@ -215,6 +259,19 @@ const ProfileScreen = ({navigation, route}:Props) => {
             }
       };
 
+      const handleSubTaskDelete = async (taskID: string) => {
+             console.log(taskID);
+             setViewTaskModalVisible(true)
+      };
+
+
+      const onRefresh = async () => {
+          setReloadScreen(true);
+          await fetchTask();
+          await loadFromCachedData();
+          setReloadScreen(false);       
+      };
+
 
       return (
          <SafeAreaView style={profileStyles.profileContainer}>
@@ -258,11 +315,11 @@ const ProfileScreen = ({navigation, route}:Props) => {
                     <Ionicons name="search" size={23} color="#fff" style={profileStyles.searchBtn}/>
                  </TouchableOpacity>
               </View>
-              <ScrollView horizontal={false} showsVerticalScrollIndicator={true} style={profileStyles.taskContainer} contentContainerStyle={[{alignItems: 'center', paddingBottom: '5%'}]}>
+              <ScrollView refreshControl={<RefreshControl refreshing={reloadScreen} onRefresh={onRefresh}/>} horizontal={false} showsVerticalScrollIndicator={true} style={profileStyles.taskContainer} contentContainerStyle={[{alignItems: 'center', paddingBottom: '5%'}]}>
                {
                   onGoingTask.map(task => (
                       <LinearGradient colors={['#455a64', '#455a64']} style={profileStyles.task}>
-                        <TouchableOpacity style={[{flex: 1}]} onPress={()=>setViewTaskModalVisible(true)}>
+                        <TouchableOpacity style={[{flex: 1}]} onPress={()=>handleSubTaskDelete(task.id)}>
                            <Text style={profileStyles.title}>{task.title}</Text>
                            <Text style={profileStyles.category}>{task.category}</Text>
                            <Text style={profileStyles.dueDate}>Due on: {task.due_date}</Text>

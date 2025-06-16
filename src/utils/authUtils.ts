@@ -48,7 +48,7 @@ export const logoutUser = async (): Promise<any> => {
             }
 
             // This returns a Response Object, use .json() method to parse the content of it
-            const responseObj = await fetch(`${BACKEND_URL_2}/api/auth/logout`, {
+            const responseObj = await fetch(`${BACKEND_URL}/api/auth/logout`, {
                    method: 'GET',
                      headers: {
                         "Authorization": `Bearer ${authToken}`,

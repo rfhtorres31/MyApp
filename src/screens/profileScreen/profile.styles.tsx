@@ -181,9 +181,9 @@ export const profileStyles = StyleSheet.create ({
       mainContainer: {        
           height: mainContainerHeight,
           width: mainContainerWidth,
-          borderColor: 'red',
-          borderWidth: 2,
-          borderStyle: 'solid',
+          // borderColor: 'red',
+          // borderWidth: 2,
+          // borderStyle: 'solid',
       }, 
 
       mainHeaderContainer: {
@@ -191,18 +191,18 @@ export const profileStyles = StyleSheet.create ({
           height: mainContainerHeight * 0.2,
           width: mainContainerWidth,
           flexDirection: 'row',
-          borderColor: 'red',
-          borderWidth: 2,
-          borderStyle: 'solid',
+          // borderColor: 'red',
+          // borderWidth: 2,
+          // borderStyle: 'solid',
           alignItems: 'center',      
       },
 
       taskContainer : {
           height: mainContainerHeight * 0.8,
           width: mainContainerWidth,
-          borderColor: 'blue',
-          borderWidth: 2,
-          borderStyle: 'solid',
+          // borderColor: 'blue',
+          // borderWidth: 2,
+          // borderStyle: 'solid',
       },
 
       task: {
@@ -267,9 +267,9 @@ export const profileStyles = StyleSheet.create ({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        borderColor: 'blue',
-        borderWidth: 2,
-        borderStyle: 'solid',         
+        // borderColor: 'blue',
+        // borderWidth: 2,
+        // borderStyle: 'solid',         
       },
        
       

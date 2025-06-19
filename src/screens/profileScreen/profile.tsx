@@ -17,6 +17,7 @@ import {getGenericPassword} from 'react-native-keychain';
 import { BACKEND_URL, BACKEND_URL_2 } from '@env';
 import { jwtDecode } from 'jwt-decode';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import isEqual from 'lodash.isequal';
 
 type ProfilScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Profile'>; // This tells the app that hey, im in the Home route and i want to know what other routes I can go into
 type ProfileScreenRouteProp = RouteProp<RootStackParamList, 'Profile'>;
@@ -34,7 +35,7 @@ type payloadFormat = {
    exp: number,
 };
 
-type taskObjFormat = {
+export type taskObjFormat = {
    id: string,
    title: string,
    description: string,
@@ -48,6 +49,7 @@ const ProfileScreen = ({navigation, route}:Props) => {
       const [createTaskModalVisible, setCreateTaskModalVisible] = useState(false);
       const [searchTaskModalVisible, setSearchTaskModalVisible] = useState(false);
       const [viewTaskModalVisible, setViewTaskModalVisible] = useState(false);
+      const [taskObj, setTaskObj] = useState<taskObjFormat | null>(null);
       const [loaderVisible, setLoaderVisible] = useState(false);
       const [onGoingTask, setOnGoingTask] = useState<taskObjFormat[]>([]);
       const [completedTask, setCompletedTask] = useState<taskObjFormat[]>([]);
@@ -80,7 +82,7 @@ const ProfileScreen = ({navigation, route}:Props) => {
                         navigation.navigate('Home');
                         return;
                     }
-                    
+
                     // Check if there is cached, if there is, load the displayed tasks from the cached data
                     // If there is no cached, fetch the tasks to the backend server
                     const cached = await AsyncStorage.getItem("userTasks");
@@ -88,9 +90,7 @@ const ProfileScreen = ({navigation, route}:Props) => {
                     if (cached) {
                        await loadFromCachedData();
                     }
-                    else {
-                      await fetchTask();
-                    }
+                    await fetchTask();
 
                 }
                 catch (err) {
@@ -153,14 +153,26 @@ const ProfileScreen = ({navigation, route}:Props) => {
                         }
                 });
                
-               const cachedData = {
+               const latestData = {
                      tasks: {
                         onGoingTask: formattedOnGoingTask,
                         completedTask: completedTask,
                      }
                };
-
-               await AsyncStorage.setItem('userTasks', JSON.stringify(cachedData));  
+               
+               const cachedData = await AsyncStorage.getItem('userTasks');
+               const existingCachedData = cachedData ? JSON.parse(cachedData) : null;
+               
+               if (!isEqual(latestData, existingCachedData)) {
+                  await AsyncStorage.setItem('userTasks', JSON.stringify(latestData));
+                  setCompletedTask(latestData.tasks.completedTask);
+                  setOnGoingTask(latestData.tasks.onGoingTask);
+               }
+               else {
+                  await AsyncStorage.setItem('userTasks', JSON.stringify(existingCachedData));
+                  setCompletedTask(latestData.tasks.completedTask);
+                  setOnGoingTask(latestData.tasks.onGoingTask);
+               }     
             }
          }
          catch (err) {
@@ -259,9 +271,17 @@ const ProfileScreen = ({navigation, route}:Props) => {
             }
       };
 
-      const handleSubTaskDelete = async (taskID: string) => {
-             console.log(taskID);
-             setViewTaskModalVisible(true)
+      const viewTask = async (id: string, title: string, description: string, due_date:string, category: string, isCompleted: boolean) => {
+             const taskObj = {
+                id: id,
+                title: title,
+                description: description,
+                due_date: due_date,
+                category: category,
+                isCompleted: isCompleted,
+             }
+             setTaskObj(taskObj);
+             setViewTaskModalVisible(true);
       };
 
 
@@ -319,7 +339,7 @@ const ProfileScreen = ({navigation, route}:Props) => {
                {
                   onGoingTask.map(task => (
                       <LinearGradient colors={['#455a64', '#455a64']} style={profileStyles.task}>
-                        <TouchableOpacity style={[{flex: 1}]} onPress={()=>handleSubTaskDelete(task.id)}>
+                        <TouchableOpacity style={[{flex: 1}]} onPress={()=>viewTask(task.id, task.title, task.description, task.due_date, task.category, task.isCompleted)}>
                            <Text style={profileStyles.title}>{task.title}</Text>
                            <Text style={profileStyles.category}>{task.category}</Text>
                            <Text style={profileStyles.dueDate}>Due on: {task.due_date}</Text>
@@ -337,7 +357,7 @@ const ProfileScreen = ({navigation, route}:Props) => {
                <Ionicons name="add-circle-outline" size={50} color="#455a64"/>
              </TouchableOpacity>           
            </View>
-           <ViewTaskModal visible={viewTaskModalVisible} onClose={()=>setViewTaskModalVisible(false)}/>
+           <ViewTaskModal visible={viewTaskModalVisible} onClose={()=>setViewTaskModalVisible(false)} taskObj={taskObj}/>
            <SearchTaskModal  visible={searchTaskModalVisible} onClose={()=>setSearchTaskModalVisible(false)}/>                                                      
            <Loader visible={loaderVisible} />
            </View>

@@ -3,16 +3,19 @@ import {View, Text, TextInput, Modal, TouchableOpacity, Animated, Dimensions, Pr
 import viewTaskModalStyle from './viewTask.styles';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { RFPercentage } from 'react-native-responsive-fontsize';
-
+import { taskObjFormat } from '../../screens/profileScreen/profile';
 
 const {height} = Dimensions.get('window');
 
 type searchBarModalProps = {
    visible: boolean,
    onClose: () => void, 
+   taskObj : taskObjFormat | null
 };
 
-const ViewTaskModal = ({visible, onClose}: searchBarModalProps) => {
+
+
+const ViewTaskModal = ({visible, onClose, taskObj}: searchBarModalProps) => {
      
     const slideAnim = useRef(new Animated.Value(height)).current; 
 
@@ -44,7 +47,7 @@ const ViewTaskModal = ({visible, onClose}: searchBarModalProps) => {
       <Modal transparent={true} visible={visible} animationType="none">
         <Pressable style={viewTaskModalStyle.overlay} onPress={onClose}>
           <Animated.View style={[viewTaskModalStyle.modalContainer, {transform:[{translateY:slideAnim}]}]}>
-            <Text style={viewTaskModalStyle.title}>Insert Title here</Text>
+            <Text style={viewTaskModalStyle.title}>{taskObj?.title}</Text>
             <View style={viewTaskModalStyle.details}>
               <View style={viewTaskModalStyle.calendar}>
                  <View style={viewTaskModalStyle.calendarIcn}>
@@ -52,7 +55,7 @@ const ViewTaskModal = ({visible, onClose}: searchBarModalProps) => {
                  </View>
                  <View style={viewTaskModalStyle.calendarDetails}>
                     <Text style={[{color: '#b3eaff', fontSize: RFPercentage(2.1), fontFamily: 'Poppins-Medium', padding:0,}]}>Due Date</Text>
-                    <Text style={[{color: 'white', fontSize: RFPercentage(2.7), fontFamily: 'Poppins-Medium', marginTop: '-6%'}]}>20 June</Text>
+                    <Text style={[{color: 'white', fontSize: RFPercentage(2.7), fontFamily: 'Poppins-Medium', marginTop: '-6%'}]}>{taskObj?.due_date}</Text>
                  </View>
               </View>
               <View style={viewTaskModalStyle.category}>
@@ -61,7 +64,7 @@ const ViewTaskModal = ({visible, onClose}: searchBarModalProps) => {
                  </View>
                  <View style={viewTaskModalStyle.calendarDetails}>
                     <Text style={[{color: '#b3eaff', fontSize: RFPercentage(2.1), fontFamily: 'Poppins-Medium', padding:0,}]}>Category</Text>
-                    <Text style={[{color: 'white', fontSize: RFPercentage(2.7), fontFamily: 'Poppins-Medium', marginTop: '-6%'}]}>Personal</Text>
+                    <Text style={[{color: 'white', fontSize: RFPercentage(2.7), fontFamily: 'Poppins-Medium', marginTop: '-6%'}]}>{taskObj?.category}</Text>
                  </View>    
               </View>
             </View>

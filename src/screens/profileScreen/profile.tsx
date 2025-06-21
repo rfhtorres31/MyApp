@@ -19,6 +19,7 @@ import { jwtDecode } from 'jwt-decode';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import isEqual from 'lodash.isequal';
 
+
 type ProfilScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Profile'>; // This tells the app that hey, im in the Home route and i want to know what other routes I can go into
 type ProfileScreenRouteProp = RouteProp<RootStackParamList, 'Profile'>;
 
@@ -35,6 +36,14 @@ type payloadFormat = {
    exp: number,
 };
 
+type subTaskFormat = {
+   id: string,
+   user_id: string, 
+   task_id: string,
+   sub_task: string,
+   isCompleted: boolean,
+}
+
 export type taskObjFormat = {
    id: string,
    title: string,
@@ -42,11 +51,12 @@ export type taskObjFormat = {
    due_date: string,
    category: string,
    isCompleted: boolean,
+   SubTask: subTaskFormat[],
 };
+
 
 const ProfileScreen = ({navigation, route}:Props) => {
        
-      const [createTaskModalVisible, setCreateTaskModalVisible] = useState(false);
       const [searchTaskModalVisible, setSearchTaskModalVisible] = useState(false);
       const [viewTaskModalVisible, setViewTaskModalVisible] = useState(false);
       const [taskObj, setTaskObj] = useState<taskObjFormat | null>(null);
@@ -135,11 +145,14 @@ const ProfileScreen = ({navigation, route}:Props) => {
             
             if (parsedObj) {
 
-                const taskObj: taskObjFormat[] = parsedObj?.content?.tasks;
-                const onGoingTask: taskObjFormat[] = taskObj.filter(task => task.isCompleted === false);
-                const completedTask: taskObjFormat[] = taskObj.filter(task => task.isCompleted === true);  
-                     
+                const taskObj: taskObjFormat[] = parsedObj?.content?.userTasks;
+                const onGoingTask: taskObjFormat[] = taskObj.filter(task => task.isCompleted === false).sort((a,b)=> new Date(a.due_date).getTime() - new Date(b.due_date).getTime());
+                const completedTask: taskObjFormat[] = taskObj.filter(task => task.isCompleted === true).sort((a,b)=> new Date(a.due_date).getTime() - new Date(b.due_date).getTime());  
+                
+                console.log(onGoingTask);
+                // Format the date 
                 const formattedOnGoingTask = onGoingTask.map(task => {
+
                         const formatDate = (dateStr: string) => {
                                     const date = new Date(dateStr);
                                     const day = String(date.getUTCDate()).padStart(2, '0');
@@ -157,7 +170,7 @@ const ProfileScreen = ({navigation, route}:Props) => {
                      tasks: {
                         onGoingTask: formattedOnGoingTask,
                         completedTask: completedTask,
-                     }
+                     },
                };
                
                const cachedData = await AsyncStorage.getItem('userTasks');
@@ -271,7 +284,7 @@ const ProfileScreen = ({navigation, route}:Props) => {
             }
       };
 
-      const viewTask = async (id: string, title: string, description: string, due_date:string, category: string, isCompleted: boolean) => {
+      const viewTask = async (id: string, title: string, description: string, due_date:string, category: string, isCompleted: boolean, SubTask: subTaskFormat[]) => {
              const taskObj = {
                 id: id,
                 title: title,
@@ -279,6 +292,7 @@ const ProfileScreen = ({navigation, route}:Props) => {
                 due_date: due_date,
                 category: category,
                 isCompleted: isCompleted,
+                SubTask: SubTask,
              }
              setTaskObj(taskObj);
              setViewTaskModalVisible(true);
@@ -291,6 +305,7 @@ const ProfileScreen = ({navigation, route}:Props) => {
           await loadFromCachedData();
           setReloadScreen(false);       
       };
+      
 
 
       return (
@@ -314,7 +329,7 @@ const ProfileScreen = ({navigation, route}:Props) => {
                 completedTask.map(task=>(
                  <Shadow {...shadowSettings}>
                      <LinearGradient colors={['#455a64', '#455a64']} style={profileStyles.featureContainer}>
-                       <TouchableOpacity style={profileStyles.featureBtn} onPress={()=>setCreateTaskModalVisible(true)}>
+                       <TouchableOpacity style={profileStyles.featureBtn}>
                           <View style={profileStyles.featureHeader}>
                             <Ionicons name="person-circle-outline" size={24} color="#fff"/>
                             <Text style={profileStyles.featureTitle}>{task.category}</Text>
@@ -339,7 +354,7 @@ const ProfileScreen = ({navigation, route}:Props) => {
                {
                   onGoingTask.map(task => (
                       <LinearGradient colors={['#455a64', '#455a64']} style={profileStyles.task}>
-                        <TouchableOpacity style={[{flex: 1}]} onPress={()=>viewTask(task.id, task.title, task.description, task.due_date, task.category, task.isCompleted)}>
+                        <TouchableOpacity style={[{flex: 1}]} onPress={()=>viewTask(task.id, task.title, task.description, task.due_date, task.category, task.isCompleted, task.SubTask)}>
                            <Text style={profileStyles.title}>{task.title}</Text>
                            <Text style={profileStyles.category}>{task.category}</Text>
                            <Text style={profileStyles.dueDate}>Due on: {task.due_date}</Text>
@@ -357,7 +372,7 @@ const ProfileScreen = ({navigation, route}:Props) => {
                <Ionicons name="add-circle-outline" size={50} color="#455a64"/>
              </TouchableOpacity>           
            </View>
-           <ViewTaskModal visible={viewTaskModalVisible} onClose={()=>setViewTaskModalVisible(false)} taskObj={taskObj}/>
+           <ViewTaskModal visible={viewTaskModalVisible} onClose={()=>setViewTaskModalVisible(false)} taskObj={taskObj} />
            <SearchTaskModal  visible={searchTaskModalVisible} onClose={()=>setSearchTaskModalVisible(false)}/>                                                      
            <Loader visible={loaderVisible} />
            </View>

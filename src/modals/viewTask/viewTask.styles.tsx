@@ -14,6 +14,9 @@ const titleHeight = modalHeight * 0.15;
 const detailsWidth = modalWidth;
 const detailsHeight = modalHeight * 0.15;
 
+const subTaskWidth = modalWidth;
+const subTaskHeight = modalHeight * 0.60;
+
 const viewTaskModalStyle = StyleSheet.create({
 
       overlay: {
@@ -44,9 +47,9 @@ const viewTaskModalStyle = StyleSheet.create({
       }, 
 
       details: {
-        // borderColor: 'red',
-        // borderStyle: 'solid',
-        // borderWidth: 1,  
+        borderColor: 'red',
+        borderStyle: 'solid',
+        borderWidth: 1,  
         width: detailsWidth,     
         height: detailsHeight,
         flexDirection: 'row',
@@ -87,6 +90,18 @@ const viewTaskModalStyle = StyleSheet.create({
         // borderWidth: 1, 
         marginLeft: '5%',
       },
+
+      subTask: {
+        width: subTaskWidth,
+        height: subTaskHeight,
+        borderColor: 'blue',
+        borderStyle: 'solid',
+        borderWidth: 1, 
+      },
+
+      subTaskDet: {
+       flexDirection: 'row',
+      }
 
 
 
